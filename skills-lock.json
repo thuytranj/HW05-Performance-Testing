@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "skills": {
+    "ci-cd-integration": {
+      "source": "petrkindlmann/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/ci-cd-integration/SKILL.md",
+      "computedHash": "4ed70302ffd57e9d791384dd19a3c848a49e84dcb8577a821913a839a872fe7c"
+    },
+    "k6": {
+      "source": "grafana/skills",
+      "sourceType": "github",
+      "skillPath": "skills/grafana-k6/k6/SKILL.md",
+      "computedHash": "23b6128a86c4cf8fbe95e629ea4e5a01f63b1e9fcf9dab8cbacf10794a3c2244"
+    },
+    "performance-testing": {
+      "source": "petrkindlmann/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/performance-testing/SKILL.md",
+      "computedHash": "924a332ff12949ca42cfc1fcc93356b4cfdd80f22c80ccc7328d2041946ba07a"
+    },
+    "test-data-management": {
+      "source": "petrkindlmann/qa-skills",
+      "sourceType": "github",
+      "skillPath": "skills/test-data-management/SKILL.md",
+      "computedHash": "cac9cf087cae4916a6dc3cd7bd3f362498215f229348595037da18bd9d88becc"
+    }
+  }
+}
