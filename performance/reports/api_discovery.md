@@ -1,0 +1,82 @@
+# API Discovery
+
+Source-derived snapshot; re-discover after source changes.
+
+```json
+{
+  "project": "/Users/thuytran/Workspace/HW05-Performance-Testing",
+  "port": 3000,
+  "base_url": "http://127.0.0.1:3000",
+  "endpoints": [
+    {
+      "method": "POST",
+      "uri": "/api/login",
+      "source": "backend/server.js:32"
+    },
+    {
+      "method": "GET",
+      "uri": "/api/products",
+      "source": "backend/server.js:141"
+    },
+    {
+      "method": "GET",
+      "uri": "/api/products/:id",
+      "source": "backend/server.js:159"
+    },
+    {
+      "method": "POST",
+      "uri": "/api/cart",
+      "source": "backend/server.js:290"
+    },
+    {
+      "method": "POST",
+      "uri": "/api/checkout",
+      "source": "backend/server.js:297"
+    }
+  ],
+  "auth": {
+    "response_field": "token",
+    "transport": "Authorization: Bearer <token>",
+    "cookie": false
+  },
+  "request_bodies": {
+    "login": [
+      "email",
+      "password"
+    ],
+    "cart": [
+      "id",
+      "name",
+      "price",
+      "quantity"
+    ],
+    "checkout": [
+      "total_amount",
+      "shipping_address"
+    ]
+  },
+  "lockout": {
+    "increment": 2,
+    "threshold": 3,
+    "effective_wrong_attempts": 2,
+    "duration_ms": 180000
+  },
+  "stock_columns": [],
+  "startup_reseeds": true,
+  "cart_storage": "process memory; no clear endpoint; checkout does not clear cart",
+  "validation": "No separate validation schema for selected routes; cart appends arbitrary JSON; checkout trusts client total",
+  "source_sha256": {
+    "backend/server.js": "47573ce5a6bf9a894748d2bb56cc8d1659ad7acd033fdd6db6b3e4d9473eb487",
+    "backend/database.js": "3366420632bb9c982905b22e3969f69515e39e7a37a4f84eba56ead7e94afed8",
+    "backend/package.json": "c2ad90d0e4a2a37319fe4d66a70563392f0e06346fb69eb7abbe7c6ff79eb1f3",
+    "backend/package-lock.json": "ec3f3b2dbf1622f1b1121b9d5916ab0eb74d06ed8c59b16082c52c452eebd814"
+  }
+}
+```
+
+## Human review
+- [ ] Confirm workflow does not duplicate group members.
+- [ ] Compare expected three-fail lockout with effective source behavior.
+- [ ] Cart payload corroborated with api_specification.md/frontend; backend accepts arbitrary body.
+- [ ] Distinguish isolated-runtime changes (port/bind only) from SUT fixes.
+- [ ] SQLite has no inventory column: stock restoration is not applicable.
