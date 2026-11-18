@@ -1,7 +1,7 @@
 {
   "student_id": "23120367",
   "date": "20261116",
-  "accounts": 40,
+  "accounts": 120,
   "port": 3000,
   "base_url": "http://127.0.0.1:3000",
   "project": "/Users/thuytran/Workspace/HW05-Performance-Testing",
