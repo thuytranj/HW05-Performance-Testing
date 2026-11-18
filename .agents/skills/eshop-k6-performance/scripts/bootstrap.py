@@ -96,12 +96,25 @@ def main():
     for scenario in ["Load", "Stress", "Spike", "Soak"]:
         imports = "import workflow, { makeOptions } from './lib/workflow.js';\n"
         tail = ""
-        if scenario == "Stress":
-            imports += "import { htmlReport } from './lib/vendor/k6-reporter.js';\n"
-            tail = "\nexport function handleSummary(data) { return { [__ENV.REPORT_PATH || 'reports/stress/stress_summary.html']: htmlReport(data, {title: 'EShop Stress Summary', theme: 'classic'}) }; }\n"
+        if scenario in ("Load", "Soak"):
+            slug = scenario.lower()
+            imports = (f"// Requires Built-in Web Dashboard env (set automatically by ./scripts/run.sh {scenario}):\n"
+                       f"// K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_PORT=-1 K6_WEB_DASHBOARD_EXPORT=reports/{slug}/{slug}_dashboard.html\n"
+                       + imports)
+        elif scenario == "Stress":
+            imports += "import { htmlReport } from './lib/vendor/k6-reporter.js';\nimport { formatConsoleSummary } from './lib/reports.js';\n"
+            tail = ("\nexport function handleSummary(data) {\n"
+                    "  return {\n"
+                    "    stdout: formatConsoleSummary(data, 'EShop Stress'),\n"
+                    "    [__ENV.REPORT_PATH || 'reports/stress/stress_summary.html']: htmlReport(data, { title: 'EShop Stress Summary', theme: 'classic' }),\n"
+                    "  };\n}\n")
         elif scenario == "Spike":
-            imports += "import { spikeReport } from './lib/reports.js';\n"
-            tail = "\nexport function handleSummary(data) { return { [__ENV.REPORT_PATH || 'reports/spike/spike_breakdown.html']: spikeReport(data) }; }\n"
+            imports += "import { spikeReport, formatConsoleSummary } from './lib/reports.js';\n"
+            tail = ("\nexport function handleSummary(data) {\n"
+                    "  return {\n"
+                    "    stdout: formatConsoleSummary(data, 'EShop Spike'),\n"
+                    "    [__ENV.REPORT_PATH || 'reports/spike/spike_breakdown.html']: spikeReport(data),\n"
+                    "  };\n}\n")
         text = (f"// Generated for HW05 on {datetime.now().astimezone().isoformat()}\n" + imports +
                 f"export const options = makeOptions('{scenario}');\n" +
                 "export { setup, teardown } from './lib/workflow.js';\nexport default workflow;\n" + tail)

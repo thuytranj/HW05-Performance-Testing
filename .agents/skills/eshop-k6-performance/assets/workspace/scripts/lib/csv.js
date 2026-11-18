@@ -34,6 +34,8 @@ export function parseCSV(text) {
     if (cells.length !== headers.length) throw new Error(`CSV column count at row ${index + 2}`);
     const item = Object.fromEntries(headers.map((h, i) => [h, cells[i]]));
     if (cells.some(v => !v.trim()) || emails.has(item.email)) throw new Error(`Empty/duplicate CSV row ${index + 2}`);
+    // Guard against SQLite syntax errors in backend's raw LIKE '%search%' concatenation.
+    if (/[';]/.test(item.keyword)) throw new Error(`Unsafe SQL character in keyword at row ${index + 2}`);
     emails.add(item.email);
     for (const key of ['productId', 'quantity']) {
       item[key] = Number(item[key]);
