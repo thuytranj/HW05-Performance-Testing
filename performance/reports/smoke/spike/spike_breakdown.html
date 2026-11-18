@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>EShop Spike Breakdown</title>
+<style>body{font:16px system-ui;max-width:1100px;margin:40px auto;color:#172033}table{border-collapse:collapse;width:100%;margin:24px 0}td,th{padding:12px;border:1px solid #cbd5e1;text-align:right}th:first-child,td:first-child{text-align:left}h1{color:#175e75}</style>
+<h1>EShop Spike: group and HTTP status breakdown</h1>
+<p>Durations are milliseconds. Missing observations are N/A, never zero. HTTP 200 can still fail business checks.</p>
+<table><tr><th>group()</th><th>min</th><th>avg</th><th>med</th><th>p(90)</th><th>p(95)</th><th>p(99)</th><th>max</th></tr><tr><th>01_auth_login</th><td>68.481</td><td>68.481</td><td>68.481</td><td>68.481</td><td>68.481</td><td>68.481</td><td>68.481</td></tr><tr><th>02_read_search</th><td>1.030</td><td>1.030</td><td>1.030</td><td>1.030</td><td>1.030</td><td>1.030</td><td>1.030</td></tr><tr><th>03_read_detail</th><td>1.283</td><td>1.283</td><td>1.283</td><td>1.283</td><td>1.283</td><td>1.283</td><td>1.283</td></tr><tr><th>04_transaction_cart</th><td>1.848</td><td>1.848</td><td>1.848</td><td>1.848</td><td>1.848</td><td>1.848</td><td>1.848</td></tr><tr><th>05_transaction_checkout</th><td>2.230</td><td>2.230</td><td>2.230</td><td>2.230</td><td>2.230</td><td>2.230</td><td>2.230</td></tr></table>
+<h2>Exact HTTP status counts across VUs</h2><table><tr><th>Status</th><th>Requests</th><th>Category</th></tr><tr><td>200</td><td>5</td><td>Response</td></tr></table>
+<p>Post-spike recovery p95: N/A (smoke or no recovery samples)</p>
+<h2>Business outcome</h2><pre>{
+  &quot;flow_success&quot;: {
+    &quot;fails&quot;: 0,
+    &quot;rate&quot;: 1,
+    &quot;passes&quot;: 1
+  },
+  &quot;flow_completed&quot;: {
+    &quot;count&quot;: 1,
+    &quot;rate&quot;: 11.802195208308746
+  }
+}</pre>
+<p>Raw CSV and independently recomputed analysis remain the evidence for AI verification.</p></html>

@@ -1,0 +1,45 @@
+{
+  "scenario": "Spike",
+  "smoke": true,
+  "started_at": "2026-11-18T16:03:05.447601+00:00",
+  "ended_at": "2026-11-18T16:03:06.134168+00:00",
+  "exit_code": 0,
+  "command": [
+    "k6",
+    "run",
+    "--out",
+    "csv=/Users/thuytran/Workspace/HW05-Performance-Testing/performance/raw_logs/23120367_Smoke_Spike_raw.csv",
+    "--summary-export",
+    "/Users/thuytran/Workspace/HW05-Performance-Testing/performance/raw_logs/Smoke_Spike_summary.json",
+    "/Users/thuytran/Workspace/HW05-Performance-Testing/performance/scripts/23120367_Spike_20261116.js"
+  ],
+  "base_url": "http://127.0.0.1:3000",
+  "backend_pid": 98849,
+  "hostname": "Thuys-MacBook-Air.local",
+  "environment": {
+    "PEAK_VUS": null,
+    "LOAD_VUS": null,
+    "SOAK_VUS": null,
+    "SOAK_SECONDS": null,
+    "THINK_SECONDS": null,
+    "P95_MS": null,
+    "ERROR_RATE": null
+  },
+  "source_sha256": {
+    "backend/server.js": "47573ce5a6bf9a894748d2bb56cc8d1659ad7acd033fdd6db6b3e4d9473eb487",
+    "backend/database.js": "3366420632bb9c982905b22e3969f69515e39e7a37a4f84eba56ead7e94afed8",
+    "backend/package.json": "c2ad90d0e4a2a37319fe4d66a70563392f0e06346fb69eb7abbe7c6ff79eb1f3",
+    "backend/package-lock.json": "ec3f3b2dbf1622f1b1121b9d5916ab0eb74d06ed8c59b16082c52c452eebd814"
+  },
+  "raw_csv_sha256": "7548a7dcbcc35ab291f39f776b5ec64ba0c521e6cd0279116cae194c0940bc52",
+  "input_csv_sha256": "62cb587b3be5b6bf64a4f3ff6131fc91c1431b01829c42b0010cbe301755efae",
+  "test_plan_sha256": "382c22ae4b8601d754c4da7e6c75b2dd1a1e2727267ff88c02d8d32f5e0906e0",
+  "shared_library_sha256": {
+    "scripts/lib/workflow.js": "e2af55d3331a3c32e730baf485c92901d405d89214e0528fbc1cafc2ec3b5c46",
+    "scripts/lib/reports.js": "b62a87e360e7a2463b724c93515a82bf67eeac8a1ed84bec8065956f30dcc161",
+    "scripts/lib/csv.js": "80e4d69e2ba0c0e96c9626dc0c6985b85c1293874477da26a60686edf5dd70c1"
+  },
+  "k6_version": "k6 v2.1.0 (commit/devel, go1.26.4, darwin/arm64)",
+  "report": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance/reports/smoke/spike/spike_breakdown.html",
+  "interpretation": "99 = threshold breach; retained as measured failure, not a pass"
+}
