@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>EShop Spike Breakdown</title>
+<style>body{font:16px system-ui;max-width:1180px;margin:40px auto;color:#172033}table{border-collapse:collapse;width:100%;margin:20px 0}td,th{padding:10px 12px;border:1px solid #cbd5e1;text-align:right}th:first-child,td:first-child{text-align:left}h1{color:#175e75}code{background:#f1f5f9;padding:2px 5px;border-radius:4px}</style>
+<h1>EShop Spike: step HTTP timing, phase comparison and status breakdown</h1>
+<p>Durations are milliseconds (HTTP request timing from <code>step_*_ms</code>, excluding think-time). Missing observations are N/A, never zero.</p>
+<h2>Step HTTP timing &amp; business checks</h2>
+<table><tr><th>Step / Group</th><th>min</th><th>avg</th><th>med</th><th>p(90)</th><th>p(95)</th><th>p(99)</th><th>max</th><th>Pass / Fail</th></tr><tr><th>01_auth_login (<code>step_login_ms</code>)</th><td>0.701</td><td>3.464</td><td>2.715</td><td>5.980</td><td>7.587</td><td>12.230</td><td>47.968</td><td>1837 / 0</td></tr><tr><th>02_read_search (<code>step_search_ms</code>)</th><td>0.320</td><td>2.361</td><td>1.672</td><td>4.766</td><td>6.270</td><td>9.940</td><td>34.259</td><td>1837 / 0</td></tr><tr><th>03_read_detail (<code>step_detail_ms</code>)</th><td>0.330</td><td>2.478</td><td>1.704</td><td>5.176</td><td>6.925</td><td>11.356</td><td>45.565</td><td>1837 / 0</td></tr><tr><th>04_transaction_cart (<code>step_cart_ms</code>)</th><td>0.548</td><td>2.650</td><td>2.267</td><td>4.489</td><td>5.201</td><td>7.023</td><td>14.096</td><td>1837 / 0</td></tr><tr><th>05_transaction_checkout (<code>step_checkout_ms</code>)</th><td>1.478</td><td>5.280</td><td>4.651</td><td>8.518</td><td>9.802</td><td>14.994</td><td>43.014</td><td>1837 / 0</td></tr></table>
+<h2>Phase latency comparison</h2>
+<table><tr><th>Phase</th><th>min</th><th>avg</th><th>med</th><th>p(90)</th><th>p(95)</th><th>p(99)</th><th>max</th></tr><tr><th>Baseline (initial load)</th><td>1.441</td><td>4.347</td><td>3.758</td><td>7.123</td><td>8.274</td><td>10.008</td><td>22.054</td></tr><tr><th>Spike (peak load)</th><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr><tr><th>Recovery (post-spike)</th><td>0.496</td><td>4.068</td><td>3.509</td><td>7.420</td><td>8.545</td><td>11.436</td><td>19.940</td></tr></table>
+<h2>Exact HTTP status counts across VUs</h2>
+<table><tr><th>Status</th><th>Requests</th><th>Category</th></tr><tr><td>200</td><td>9185</td><td>Success response (2xx)</td></tr></table>
+<h2>Business outcome &amp; SUT anomaly counters</h2>
+<pre>{
+  &quot;flow_success&quot;: {
+    &quot;rate&quot;: 1,
+    &quot;passes&quot;: 1837,
+    &quot;fails&quot;: 0
+  },
+  &quot;flow_completed&quot;: {
+    &quot;count&quot;: 1837,
+    &quot;rate&quot;: 13.529082936378968
+  },
+  &quot;flow_processing_ms&quot;: {
+    &quot;max&quot;: 68.31302493855583,
+    &quot;min&quot;: 8.139606167357215,
+    &quot;avg&quot;: 20.082454505625073,
+    &quot;med&quot;: 18.745435279738558,
+    &quot;p(90)&quot;: 28.222191987512726,
+    &quot;p(95)&quot;: 30.884956543582103,
+    &quot;p(99)&quot;: 46.126114626083265
+  },
+  &quot;auth_locked_errors&quot;: 0,
+  &quot;price_string_anomalies&quot;: 743
+}</pre>
+<p>Raw CSV and independently recomputed analysis remain the evidence for AI verification.</p></html>

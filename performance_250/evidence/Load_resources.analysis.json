@@ -1,0 +1,11 @@
+{
+  "source": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/evidence/Load_resources.csv",
+  "samples": 181,
+  "sample_span_seconds": 183.389828,
+  "peak_rss_mib": 68.875,
+  "first_rss_mib": 55.78125,
+  "last_rss_mib": 68.828125,
+  "net_rss_change_mib": 13.046875,
+  "max_ps_cpu_percent": 10.0,
+  "interpretation": "ps CPU is platform process average, RSS is sampled resident memory; growth alone does not prove a leak"
+}

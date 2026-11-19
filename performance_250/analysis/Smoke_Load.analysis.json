@@ -1,0 +1,124 @@
+{
+  "source": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/raw_logs/23120367_Smoke_Load_raw.csv",
+  "sha256": "d307abad1c53cb7a0f290d6f87e800b7c42033852c92e8b12f0531da3621d5b3",
+  "csv_rows": 82,
+  "window_seconds": 0.022,
+  "window_offsets_seconds": null,
+  "method": "Type-7 linear quantiles; ms; RPS uses declared common measurement window; error rates are fractions",
+  "http_overall": {
+    "samples": 5,
+    "min_ms": 0.68,
+    "avg_ms": 2.8868,
+    "med_ms": 1.852,
+    "p90_ms": 6.2978000000000005,
+    "p95_ms": 7.761399999999998,
+    "p99_ms": 8.932279999999999,
+    "max_ms": 9.225,
+    "requests": 5,
+    "rps": 227.27272727272728,
+    "error_rate": 0.0,
+    "status_counts": {
+      "200": 5
+    }
+  },
+  "endpoints": {
+    "cart": {
+      "samples": 1,
+      "min_ms": 1.907,
+      "avg_ms": 1.907,
+      "med_ms": 1.907,
+      "p90_ms": 1.907,
+      "p95_ms": 1.907,
+      "p99_ms": 1.907,
+      "max_ms": 1.907,
+      "requests": 1,
+      "rps": 45.45454545454546,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 1
+      }
+    },
+    "checkout": {
+      "samples": 1,
+      "min_ms": 1.852,
+      "avg_ms": 1.852,
+      "med_ms": 1.852,
+      "p90_ms": 1.852,
+      "p95_ms": 1.852,
+      "p99_ms": 1.852,
+      "max_ms": 1.852,
+      "requests": 1,
+      "rps": 45.45454545454546,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 1
+      }
+    },
+    "detail": {
+      "samples": 1,
+      "min_ms": 0.77,
+      "avg_ms": 0.77,
+      "med_ms": 0.77,
+      "p90_ms": 0.77,
+      "p95_ms": 0.77,
+      "p99_ms": 0.77,
+      "max_ms": 0.77,
+      "requests": 1,
+      "rps": 45.45454545454546,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 1
+      }
+    },
+    "login": {
+      "samples": 1,
+      "min_ms": 9.225,
+      "avg_ms": 9.225,
+      "med_ms": 9.225,
+      "p90_ms": 9.225,
+      "p95_ms": 9.225,
+      "p99_ms": 9.225,
+      "max_ms": 9.225,
+      "requests": 1,
+      "rps": 45.45454545454546,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 1
+      }
+    },
+    "search": {
+      "samples": 1,
+      "min_ms": 0.68,
+      "avg_ms": 0.68,
+      "med_ms": 0.68,
+      "p90_ms": 0.68,
+      "p95_ms": 0.68,
+      "p99_ms": 0.68,
+      "max_ms": 0.68,
+      "requests": 1,
+      "rps": 45.45454545454546,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 1
+      }
+    }
+  },
+  "flow": {
+    "samples": 1,
+    "min_ms": 19.0,
+    "avg_ms": 19.0,
+    "med_ms": 19.0,
+    "p90_ms": 19.0,
+    "p95_ms": 19.0,
+    "p99_ms": 19.0,
+    "max_ms": 19.0,
+    "attempts": 1,
+    "completed": 1,
+    "observed_outcomes": 1,
+    "boundary_observations_mismatch": false,
+    "interrupted_attempts": 0,
+    "attempts_per_second": 45.45454545454546,
+    "completed_per_second": 45.45454545454546,
+    "error_rate": 0.0
+  }
+}

@@ -1,0 +1,39 @@
+2026-11-19T09:09:49Z
+Thuys-MacBook-Air.local
+Darwin Thuys-MacBook-Air.local 27.0.0 Darwin Kernel Version 27.0.0: Tue Aug 11 21:05:27 PDT 2026; root:xnu-13432.1.9~1/RELEASE_ARM64_T8103 arm64
+Hardware:
+
+    Hardware Overview:
+
+      Model Name: MacBook Air
+      Model Identifier: MacBookAir10,1
+      Model Number: MGN93SA/A
+      Chip: Apple M1
+      Total Number of Cores: 8 (4 Performance and 4 Efficiency)
+      Memory: 8 GB
+      System Firmware Version: 20457.1.29
+      OS Loader Version: 20457.1.29
+      Serial Number (system): HXJM11F91WFY
+      Hardware UUID: 9E479105-86F9-548A-9768-62941548EA4D
+      Provisioning UDID: 00008103-000208980A84A01E
+      Activation Lock Status: Enabled
+
+Software:
+
+    System Software Overview:
+
+      System Version: macOS 27.0.1 (26A434)
+      Kernel Version: Darwin 27.0.0
+      Boot Volume: Macintosh HD
+      Boot Mode: Normal
+      Computer Name: Thuy’s MacBook Air
+      User Name: Thuy Tran (thuytran)
+      Secure Virtual Memory: Enabled
+      System Integrity Protection: Enabled
+      Time since boot: 1 day, 6 hours, 44 minutes
+
+hw.memsize: 8589934592
+hw.ncpu: 8
+k6 v2.1.0 (commit/devel, go1.26.4, darwin/arm64)
+v22.17.1
+Python 3.13.12

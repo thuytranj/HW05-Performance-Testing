@@ -1,0 +1,15 @@
+{
+  "source_sha256": {
+    "backend/server.js": "47573ce5a6bf9a894748d2bb56cc8d1659ad7acd033fdd6db6b3e4d9473eb487",
+    "backend/database.js": "3366420632bb9c982905b22e3969f69515e39e7a37a4f84eba56ead7e94afed8",
+    "backend/package.json": "c2ad90d0e4a2a37319fe4d66a70563392f0e06346fb69eb7abbe7c6ff79eb1f3",
+    "backend/package-lock.json": "ec3f3b2dbf1622f1b1121b9d5916ab0eb74d06ed8c59b16082c52c452eebd814"
+  },
+  "runtime_server_sha256": "97cfc9a8b0a7c55f83b845a3bfc2df6907a61a693dff17439cf4efb502fba046",
+  "changes": [
+    "PORT=3000",
+    "bind loopback 127.0.0.1"
+  ],
+  "database": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/.runtime/backend/database.sqlite",
+  "original_database_modified": false
+}

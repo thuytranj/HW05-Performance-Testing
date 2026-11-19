@@ -1,0 +1,45 @@
+{
+  "scenario": "Load",
+  "smoke": false,
+  "started_at": "2026-11-19T10:38:22.435201+00:00",
+  "ended_at": "2026-11-19T10:41:25.903827+00:00",
+  "exit_code": 0,
+  "command": [
+    "k6",
+    "run",
+    "--out",
+    "csv=/Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/raw_logs/23120367_Load_raw.csv",
+    "--summary-export",
+    "/Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/raw_logs/Load_summary.json",
+    "/Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/scripts/23120367_Load_20261119.js"
+  ],
+  "base_url": "http://127.0.0.1:3000",
+  "backend_pid": 9177,
+  "hostname": "Thuys-MacBook-Air.local",
+  "environment": {
+    "PEAK_VUS": null,
+    "LOAD_VUS": null,
+    "SOAK_VUS": null,
+    "SOAK_SECONDS": null,
+    "THINK_SECONDS": null,
+    "P95_MS": null,
+    "ERROR_RATE": null
+  },
+  "source_sha256": {
+    "backend/server.js": "47573ce5a6bf9a894748d2bb56cc8d1659ad7acd033fdd6db6b3e4d9473eb487",
+    "backend/database.js": "3366420632bb9c982905b22e3969f69515e39e7a37a4f84eba56ead7e94afed8",
+    "backend/package.json": "c2ad90d0e4a2a37319fe4d66a70563392f0e06346fb69eb7abbe7c6ff79eb1f3",
+    "backend/package-lock.json": "ec3f3b2dbf1622f1b1121b9d5916ab0eb74d06ed8c59b16082c52c452eebd814"
+  },
+  "raw_csv_sha256": "a78c552b144202b0d1082e67db7f977c24c7109e88f51f48209b521a9486f61e",
+  "input_csv_sha256": "8e2213b6f93b43b345955e805d739dfc63887bead0f6619f1e13919b72d19122",
+  "test_plan_sha256": "1654477a287f1ac300565453ae3622951c432d4066d2f08bc4504fed94d4682f",
+  "shared_library_sha256": {
+    "scripts/lib/workflow.js": "2c25ae1f483084ce9703aeca56f68c6e03afb41a14227c4519d7578b38eac9e2",
+    "scripts/lib/reports.js": "fe66edf36b338536dfb248432dcffc839c7c1711a7650c2e25308f191728724b",
+    "scripts/lib/csv.js": "4ebbe9508d8ba36a5d497e7422b57a8aa4191cf093edb53daa4dcf47a604aee5"
+  },
+  "k6_version": "k6 v2.1.0 (commit/devel, go1.26.4, darwin/arm64)",
+  "report": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/reports/load/load_dashboard.html",
+  "interpretation": "99 = threshold breach; retained as measured failure, not a pass"
+}

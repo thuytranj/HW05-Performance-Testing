@@ -1,0 +1,124 @@
+{
+  "source": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/raw_logs/23120367_Soak_raw.csv",
+  "sha256": "ec67cb4c41df587980a34759fa86ffd844c4cc14a95490452f235c728c23fec9",
+  "csv_rows": 181795,
+  "window_seconds": 605.298,
+  "window_offsets_seconds": null,
+  "method": "Type-7 linear quantiles; ms; RPS uses declared common measurement window; error rates are fractions",
+  "http_overall": {
+    "samples": 11975,
+    "min_ms": 0.447,
+    "avg_ms": 4.04047624217119,
+    "med_ms": 3.533,
+    "p90_ms": 7.326200000000001,
+    "p95_ms": 8.182799999999995,
+    "p99_ms": 10.403080000000001,
+    "max_ms": 35.247,
+    "requests": 11975,
+    "rps": 19.783643758941878,
+    "error_rate": 0.0,
+    "status_counts": {
+      "200": 11975
+    }
+  },
+  "endpoints": {
+    "cart": {
+      "samples": 2395,
+      "min_ms": 1.037,
+      "avg_ms": 3.650910229645094,
+      "med_ms": 3.63,
+      "p90_ms": 4.719399999999999,
+      "p95_ms": 5.2563999999999975,
+      "p99_ms": 6.995079999999999,
+      "max_ms": 14.87,
+      "requests": 2395,
+      "rps": 3.956728751788375,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 2395
+      }
+    },
+    "checkout": {
+      "samples": 2395,
+      "min_ms": 1.971,
+      "avg_ms": 7.0242718162839255,
+      "med_ms": 7.071,
+      "p90_ms": 8.8146,
+      "p95_ms": 9.6259,
+      "p99_ms": 11.98463999999999,
+      "max_ms": 35.247,
+      "requests": 2395,
+      "rps": 3.956728751788375,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 2395
+      }
+    },
+    "detail": {
+      "samples": 2395,
+      "min_ms": 0.447,
+      "avg_ms": 2.353264718162839,
+      "med_ms": 2.115,
+      "p90_ms": 3.3015999999999983,
+      "p95_ms": 4.404899999999999,
+      "p99_ms": 6.832339999999995,
+      "max_ms": 26.405,
+      "requests": 2395,
+      "rps": 3.956728751788375,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 2395
+      }
+    },
+    "login": {
+      "samples": 2395,
+      "min_ms": 1.442,
+      "avg_ms": 4.768125678496869,
+      "med_ms": 4.557,
+      "p90_ms": 6.238999999999999,
+      "p95_ms": 7.48019999999999,
+      "p99_ms": 11.941919999999998,
+      "max_ms": 25.245,
+      "requests": 2395,
+      "rps": 3.956728751788375,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 2395
+      }
+    },
+    "search": {
+      "samples": 2395,
+      "min_ms": 0.646,
+      "avg_ms": 2.4058087682672236,
+      "med_ms": 2.136,
+      "p90_ms": 3.4116,
+      "p95_ms": 4.664999999999997,
+      "p99_ms": 8.154539999999999,
+      "max_ms": 24.978,
+      "requests": 2395,
+      "rps": 3.956728751788375,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 2395
+      }
+    }
+  },
+  "flow": {
+    "samples": 2395,
+    "min_ms": 2124.0,
+    "avg_ms": 4034.0951983298537,
+    "med_ms": 4042.0,
+    "p90_ms": 4746.2,
+    "p95_ms": 4962.599999999999,
+    "p99_ms": 5291.299999999999,
+    "max_ms": 5657.0,
+    "attempts": 2395,
+    "completed": 2395,
+    "observed_outcomes": 2395,
+    "boundary_observations_mismatch": false,
+    "interrupted_attempts": 0,
+    "attempts_per_second": 3.956728751788375,
+    "completed_per_second": 3.956728751788375,
+    "error_rate": 0.0
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "source": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/raw_logs/23120367_Load_raw.csv",
+  "sha256": "a78c552b144202b0d1082e67db7f977c24c7109e88f51f48209b521a9486f61e",
+  "csv_rows": 23294,
+  "window_seconds": 182.861,
+  "window_offsets_seconds": null,
+  "method": "Type-7 linear quantiles; ms; RPS uses declared common measurement window; error rates are fractions",
+  "http_overall": {
+    "samples": 1520,
+    "min_ms": 0.76,
+    "avg_ms": 3.801014473684211,
+    "med_ms": 3.3600000000000003,
+    "p90_ms": 6.370500000000001,
+    "p95_ms": 7.239199999999999,
+    "p99_ms": 8.827859999999996,
+    "max_ms": 33.743,
+    "requests": 1520,
+    "rps": 8.312324661901663,
+    "error_rate": 0.0,
+    "status_counts": {
+      "200": 1520
+    }
+  },
+  "endpoints": {
+    "cart": {
+      "samples": 304,
+      "min_ms": 1.579,
+      "avg_ms": 3.6705230263157893,
+      "med_ms": 3.503,
+      "p90_ms": 4.6395,
+      "p95_ms": 4.952499999999999,
+      "p99_ms": 6.522169999999986,
+      "max_ms": 30.188,
+      "requests": 304,
+      "rps": 1.6624649323803327,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 304
+      }
+    },
+    "checkout": {
+      "samples": 304,
+      "min_ms": 3.086,
+      "avg_ms": 6.444628289473684,
+      "med_ms": 6.177,
+      "p90_ms": 7.952699999999999,
+      "p95_ms": 8.60555,
+      "p99_ms": 10.743559999999977,
+      "max_ms": 32.365,
+      "requests": 304,
+      "rps": 1.6624649323803327,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 304
+      }
+    },
+    "detail": {
+      "samples": 304,
+      "min_ms": 0.865,
+      "avg_ms": 2.196881578947368,
+      "med_ms": 2.025,
+      "p90_ms": 2.9704,
+      "p95_ms": 3.4416999999999978,
+      "p99_ms": 5.053519999999997,
+      "max_ms": 7.57,
+      "requests": 304,
+      "rps": 1.6624649323803327,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 304
+      }
+    },
+    "login": {
+      "samples": 304,
+      "min_ms": 2.448,
+      "avg_ms": 4.416917763157895,
+      "med_ms": 4.256,
+      "p90_ms": 5.5091,
+      "p95_ms": 5.802149999999998,
+      "p99_ms": 8.176309999999994,
+      "max_ms": 33.743,
+      "requests": 304,
+      "rps": 1.6624649323803327,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 304
+      }
+    },
+    "search": {
+      "samples": 304,
+      "min_ms": 0.76,
+      "avg_ms": 2.276121710526316,
+      "med_ms": 2.202,
+      "p90_ms": 3.0272,
+      "p95_ms": 3.5279999999999974,
+      "p99_ms": 5.478479999999974,
+      "max_ms": 7.386,
+      "requests": 304,
+      "rps": 1.6624649323803327,
+      "error_rate": 0.0,
+      "status_counts": {
+        "200": 304
+      }
+    }
+  },
+  "flow": {
+    "samples": 304,
+    "min_ms": 2596.0,
+    "avg_ms": 3997.9111842105262,
+    "med_ms": 4023.0,
+    "p90_ms": 4804.7,
+    "p95_ms": 4973.65,
+    "p99_ms": 5291.76,
+    "max_ms": 5443.0,
+    "attempts": 304,
+    "completed": 304,
+    "observed_outcomes": 304,
+    "boundary_observations_mismatch": false,
+    "interrupted_attempts": 0,
+    "attempts_per_second": 1.6624649323803327,
+    "completed_per_second": 1.6624649323803327,
+    "error_rate": 0.0
+  }
+}
