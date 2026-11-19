@@ -1,4 +1,4 @@
-* 254a472 (HEAD -> main) docs: enrich README files with explicit Test Summary Report per §14
+* d562482 (HEAD -> main, origin/main, origin/HEAD) docs: enrich README files with explicit Test Summary Report per §14
 * 5d2d4ea docs: sync root README with performance_250 submission summary
 * 15801ce docs(perf): add finalized PDF deliverables for main report, AI audit and critique
 * 9b7346e docs(perf): update main report and README with video links, skill roles and self-assessment
@@ -13,7 +13,7 @@
 * 6e60f9e docs(perf): update Vietnamese main report with Task 1 results, Task 2 verification, and issue links
 * 5a12006 docs(perf): add Task 2 AI verification and optimization feasibility analysis
 * 3ef69f4 test(perf): add hardware specification screenshot evidence
-* 78a4875 (origin/main, origin/HEAD) test(perf): add 250-VU Load/Stress/Spike and 20-VU Soak results, analysis, and evidence
+* 78a4875 test(perf): add 250-VU Load/Stress/Spike and 20-VU Soak results, analysis, and evidence
 * ba126e4 feat(perf): bootstrap 250-account workspace and test plans for 20261119
 * 169188c chore(perf): retire prior 20261116 workspace superseded by 250-VU run
 * bfc5a4e fix(skills): scale default VUs (250 peak / 20 soak) and harden PID/port cleanup
@@ -23,3 +23,8 @@
 * 106fe69 fix(perf): harden k6 workflow, spike phase tracking, checks and summary reports
 * e92be85 test(perf): scale independent test accounts to 120 for peak load
 * 69ff1c1 docs(perf): record initial AI interaction into audit log
+* 84e2a80 feat(perf): bootstrap isolated performance workspace and test plans
+* 8743c8f test(perf): add 40-account synthetic dataset and database reset script
+* 00ee08c docs(project): document architecture and agent guidelines
+* 18e0428 feat(skills): add EShop k6 performance testing workflow
+* 9a1c178 chore(skills): install k6 and QA support skills
