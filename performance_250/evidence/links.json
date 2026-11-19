@@ -1,0 +1,11 @@
+{
+  "public_repository": "https://github.com/thuytranj/HW05-Performance-Testing",
+  "demo_youtube": "https://youtu.be/aYq1_LxL9zk",
+  "demo_total_seconds": 380,
+  "skill_demo_youtube": "https://youtu.be/s2V4jQMAYdg",
+  "github_issues": [
+    "https://github.com/thuytranj/HW05-Performance-Testing/issues/1",
+    "https://github.com/thuytranj/HW05-Performance-Testing/issues/2"
+  ],
+  "k6_raw_format_confirmation": "Confirmed: Native k6 CSV with raw metric samples preserved; k6 equivalent to JMeter .jtl accepted as per assignment instructions allowing k6."
+}
