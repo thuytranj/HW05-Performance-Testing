@@ -1,8 +1,0 @@
-{"timestamp": "2026-11-18T16:01:57.126838+00:00", "event": "data_prepared", "rows": 120, "database": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance/.runtime/backend/database.sqlite", "stock_restore": "N/A: no stock column in this SUT"}
-{"timestamp": "2026-11-18T16:01:57.127381+00:00", "event": "reset", "backend_pid": 98849, "effects": "isolated DB reseeded; RAM cart cleared; login unlocked; test orders removed"}
-{"timestamp": "2026-11-18T16:03:06.222547+00:00", "event": "run_finished", "scenario": "Smoke_Spike", "exit_code": 0}
-{"timestamp": "2026-11-18T16:03:06.755795+00:00", "event": "data_prepared", "rows": 120, "database": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance/.runtime/backend/database.sqlite", "stock_restore": "N/A: no stock column in this SUT"}
-{"timestamp": "2026-11-18T16:03:06.755890+00:00", "event": "reset", "backend_pid": 99414, "effects": "isolated DB reseeded; RAM cart cleared; login unlocked; test orders removed"}
-{"timestamp": "2026-11-18T16:52:29.704076+00:00", "event": "data_prepared", "rows": 120, "database": "/Users/thuytran/Workspace/HW05-Performance-Testing/performance/.runtime/backend/database.sqlite", "stock_restore": "N/A: no stock column in this SUT"}
-{"timestamp": "2026-11-18T16:52:29.704679+00:00", "event": "reset", "backend_pid": 22975, "effects": "isolated DB reseeded; RAM cart cleared; login unlocked; test orders removed"}
-{"timestamp": "2026-11-18T16:52:30.454923+00:00", "event": "run_finished", "scenario": "Smoke_Load", "exit_code": 0}
