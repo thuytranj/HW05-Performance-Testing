@@ -230,3 +230,65 @@ Vì kết quả hiện tại đo trên localhost (chưa có độ trễ mạng I
 ### Human review
 
 Pending: record actual corrections and reasoning.
+
+## 2026-11-19T20:11:16+07:00 — Antigravity (Gemini)
+
+### Prompt
+
+Hãy đóng vai một DevOps / Performance Architect và thiết kế một mô hình **Continuous Performance Testing (CPT)** tự động cho dự án `eshop-sut` (tích hợp trên GitHub Actions), tập trung bảo vệ hiệu năng cho luồng E2E 5 endpoint cốt lõi (`POST /api/login`, `GET /api/products?search`, `GET /api/products/{id}`, `POST /api/cart`, `POST /api/checkout`) ghi vào file performance_250/reports/main-report.md.
+
+Hãy trình bày giải pháp gồm 4 phần cụ thể:
+1. **Cơ chế theo dõi Commit & Bộ lọc thông minh (Commit Watcher & Trigger Decision):**
+   - Định nghĩa quy tắc **Path Filter** và **Commit/PR Label**: Khi nào thì chỉ chạy unit test (ví dụ: sửa `README.md`, docs, CSS/UI), khi nào chạy **Smoke Performance Test** (PR vào nhánh `develop`/`main`), và khi nào chạy **Full Load/Soak Gate** (release tag hoặc thay đổi chạm trực tiếp vào `routes/`, `controllers/`, `middleware/`, `package.json`).
+2. **Quy trình kiểm thử & Cơ chế phát hiện suy giảm p95 (p95 Regression Gate):**
+   - Mô tả cách tự động dựng môi trường SUT sạch (reset trạng thái in-memory & lockout), chạy k6 script trên luồng 5 endpoint, và so sánh chỉ số `p95` hiện tại với **Baseline** của nhánh `main` (ví dụ: đánh fail pipeline nếu `p95` của toàn luồng tăng > 15% hoặc `p95` của riêng `POST /api/checkout` vượt ngưỡng SLA).
+3. **Sơ đồ luồng (Flowchart):**
+   - Vẽ sơ đồ luồng hoạt động end-to-end từ lúc Developer push commit đến khi hệ thống ra quyết định Pass/Block PR và cập nhật Baseline bằng cú pháp **Mermaid.js** (`flowchart TD`).
+4. **Phân tích đánh đổi (Trade-offs):**
+   - Phân tích sâu sự đánh đổi giữa **Chi phí hạ tầng (Infrastructure Cost & Execution Time)** và **Cảnh báo giả (False Alarms / Flaky Performance Tests)** khi chọn giữa GitHub-hosted shared runners (nhiễu CPU) so với Self-hosted dedicated runner (tốn chi phí duy trì), cũng như cách giảm thiểu false alarms (ví dụ: chạy lặp lại 2 lần khi có cảnh báo bất thường hoặc dùng giá trị trung vị của 3 lần chạy).
+
+### Final AI response
+
+Tôi đã thiết kế mô hình **Continuous Performance Testing (CPT)** cho `eshop-sut` trên GitHub Actions và ghi vào Mục 7 của [main-report.md](file:///Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/reports/main-report.md#L241). Tóm tắt 4 phần chính đã cập nhật:
+
+1. **Commit Watcher & Trigger Decision (Path Filter + Label):**
+   - **Chỉ Unit Test & Lint (Skip Perf):** Khi thay đổi chỉ nằm trong `README.md`, `docs/**`, `**/*.md`, `frontend-*/**/*.css` và không gắn label `perf:*` (ghi lý do skip vào Job Summary).
+   - **Smoke Performance Test (1 VU, 1 iteration):** Khi mở PR vào `develop`/`main` chạm code ứng dụng chung hoặc có label `perf:smoke`.
+   - **Full Load / Soak Gate:** Khi tạo release tag (`v*.*.*`), chạy lịch Nightly (`schedule` cron cho Stress/Spike/Soak 10–15 phút), gắn label `perf:full`, hoặc chạm trực tiếp `backend/**` (`server.js`, `database.js`, `routes/**`, `controllers/**`, `middleware/**`, `package.json`, `package-lock.json`) và `performance*/scripts/**`.
+2. **Quy trình kiểm thử & p95 Regression Gate:**
+   - Tự động dựng SUT trong thư mục runtime cô lập, khởi tạo deterministic seed (`>= 40` tài khoản độc lập/VU), khởi động tiến trình Node.js mới (reset `userCarts` trong RAM và `login_attempts`), healthcheck rồi chạy k6 trên luồng 5 endpoint.
+   - Đánh **FAIL / Block PR** nếu: `p95` toàn luồng tăng **> 15%** (kèm ngưỡng sàn tuyệt đối `>= 2 ms` loopback / `>= 10 ms` staging) **HOẶC** `p95` của `POST /api/checkout` tăng **> 15%** / vượt SLA tuyệt đối **HOẶC** `error_rate` vượt ngưỡng cho phép. Baseline nhánh `main` chỉ được cập nhật tường minh (explicit promotion) sau khi merge thành công, không tự ghi đè khi có regression.
+3. **Sơ đồ luồng Mermaid (`flowchart TD`):**
+   - Đã vẽ sơ đồ end-to-end từ bước push commit/PR, lọc path/label, chạy Smoke/Load/Soak, kiểm tra comparable run, so sánh baseline, nhánh rerun 3 lần lấy trung vị đến bước Pass/Block PR và cập nhật baseline.
+4. **Phân tích đánh đổi (Trade-offs):**
+   - Đối chiếu **GitHub-hosted shared runners** (chi phí thấp, không cần bảo trì nhưng dễ dính nhiễu CPU *noisy neighbor* gây false alarm trên nền `p95` vài mili-giây) với **Self-hosted dedicated runner** (số liệu ổn định nhưng tốn chi phí duy trì 24/7 và bảo mật).
+   - Áp dụng 3 biện pháp giảm thiểu: phân tầng tần suất (Smoke/Load trên PR, Stress/Soak vào Nightly/Release), cơ chế **Rerun + Median-of-3** (vẫn giữ nguyên log fail gốc để truy vết), và kết hợp ngưỡng sàn tuyệt đối cùng giám sát tài nguyên runner.
+
+Đã ghi nhận lượt trao đổi này vào [ai-audit.md](file:///Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/audit/ai-audit.md).
+
+### Human review
+
+Pending: record actual corrections and reasoning.
+
+## 2026-11-19T20:17:56+07:00 — Antigravity (Gemini)
+
+### Prompt
+
+Hãy rà soát lại kiến trúc Continuous Performance Testing vừa đề xuất để đảm bảo khớp hoàn toàn với kiến trúc thực tế của `eshop-sut` (backend Node.js lưu trạng thái giỏ hàng, đơn hàng và tài khoản trực tiếp in-memory trên RAM, không dùng cơ sở dữ liệu ngoài):
+1. Loại bỏ các bước dư thừa (như khởi tạo container PostgreSQL/Redis) trong sơ đồ Mermaid và thay bằng bước khởi động tiến trình Node.js sạch cho mỗi lượt chạy test.
+2. Bổ sung một đoạn cấu hình mẫu ngắn gọn (`.github/workflows/perf-regression-gate.yml`) minh họa cách dùng `paths:` filter, chạy k6 với `--summary-export` và chạy script Python/Node so sánh `p95` với file `baseline.json` để chặn PR khi có regression.
+3. Tóm tắt bảng so sánh 3 chiến lược triển khai CI Performance Gate (`Mọi Commit` vs. `PR Path-Filtered` vs. `Nightly Scheduled`) theo 3 tiêu chí: *Tốc độ phản hồi (Feedback Loop)*, *Chi phí Runner*, và *Rủi ro False Alarms*.
+
+### Final AI response
+
+Tôi đã rà soát và cập nhật Mục 7 trong [main-report.md](file:///Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/reports/main-report.md#L275) để khớp hoàn toàn với kiến trúc thực tế của `eshop-sut` (tiến trình Node.js quản lý giỏ hàng `userCarts` in-memory trên RAM cùng SQLite nhúng cục bộ cho `users`/`products`/`orders`, không dùng DB/cache container ngoài):
+
+1. **Sơ đồ Mermaid (`flowchart TD`):** Đã cập nhật tại [main-report.md](file:///Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/reports/main-report.md#L275-L308) để loại bỏ hoàn toàn bước dựng container ngoài và thay bằng **khởi động tiến trình Node.js sạch** cho từng lượt chạy (kể cả trong các lượt rerun xác minh).
+2. **Cấu hình mẫu `.github/workflows/perf-regression-gate.yml`:** Đã bổ sung tại Mục 7.5 của [main-report.md](file:///Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/reports/main-report.md#L325-L370), minh họa `paths:` filter (`backend/**`, `performance_250/scripts/**`), khởi động `node backend/server.js`, chạy k6 với `--out csv` và `--summary-export=summary.json`, rồi dùng script Python đối chiếu `p95` với `baseline.json` và thoát mã `1` để chặn PR nếu có regression.
+3. **Bảng so sánh 3 chiến lược CI Performance Gate:** Đã bổ sung tại [main-report.md](file:///Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/reports/main-report.md#L372-L378), đối chiếu `Mọi Commit`, `PR Path-Filtered`, và `Nightly Scheduled` theo *Tốc độ phản hồi (Feedback Loop)*, *Chi phí Runner*, và *Rủi ro False Alarms*.
+
+Đã ghi nhận lượt trao đổi này vào [ai-audit.md](file:///Users/thuytran/Workspace/HW05-Performance-Testing/performance_250/audit/ai-audit.md).
+
+### Human review
+
+Pending: record actual corrections and reasoning.
