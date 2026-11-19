@@ -1,0 +1,4 @@
+interface:
+  display_name: "EShop k6 Performance"
+  short_description: "Run and audit the EShop HW05 k6 workflow"
+  default_prompt: "Use $eshop-k6-performance for HW05 EShop API discovery, isolated CSV preparation, k6 plans and evidence-backed review."
