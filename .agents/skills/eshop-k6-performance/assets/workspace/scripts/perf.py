@@ -87,13 +87,27 @@ def install(cfg):
 def owned_pid():
     if not PIDFILE.exists():
         return None
-    pid = int(PIDFILE.read_text().strip())
-    proc = subprocess.run(["ps", "-p", str(pid), "-o", "command="], capture_output=True, text=True)
-    if proc.returncode or not proc.stdout.strip():
+    raw_pid = PIDFILE.read_text().strip()
+    if not raw_pid:
+        PIDFILE.unlink(missing_ok=True)
         return None
+    pid = int(raw_pid)
+    try:
+        os.waitpid(pid, os.WNOHANG)
+    except ChildProcessError:
+        pass
+    proc = subprocess.run(["ps", "-p", str(pid), "-o", "state=,command="], capture_output=True, text=True)
+    line = proc.stdout.strip()
+    if proc.returncode or not line:
+        PIDFILE.unlink(missing_ok=True)
+        return None
+    parts = line.split(None, 1)
+    state = parts[0] if parts else ""
+    cmd = parts[1] if len(parts) > 1 else ""
     # Never kill a PID recycled into another process, another Node server or a user backend.
-    if str(RUNTIME / "server.js") not in proc.stdout:
-        raise ValueError(f"PID {pid} no longer belongs to this isolated runtime; refusing to signal it")
+    if state.startswith("Z") or str(RUNTIME / "server.js") not in cmd:
+        PIDFILE.unlink(missing_ok=True)
+        return None
     return pid
 
 
@@ -104,6 +118,10 @@ def stop():
     if pid:
         os.kill(pid, signal.SIGTERM)
         for _ in range(50):
+            try:
+                os.waitpid(pid, os.WNOHANG)
+            except ChildProcessError:
+                pass
             if not owned_pid():
                 break
             time.sleep(.1)
@@ -160,8 +178,16 @@ def reset(cfg):
     if not (RUNTIME / "node_modules/express").exists():
         raise ValueError("Run python3 scripts/perf.py install first")
     # Require the chosen port to be free; never replace an existing SUT/service.
-    with socket.socket() as probe:
-        probe.bind(("127.0.0.1", cfg["port"]))
+    for attempt in range(10):
+        try:
+            with socket.socket() as probe:
+                probe.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                probe.bind(("127.0.0.1", cfg["port"]))
+            break
+        except OSError:
+            if attempt == 9:
+                raise
+            time.sleep(.2)
     with (ROOT / ".runtime/backend.log").open("a") as log:
         process = subprocess.Popen(["node", str(RUNTIME / "server.js")], cwd=RUNTIME, stdout=log,
                                    stderr=subprocess.STDOUT, start_new_session=True)
