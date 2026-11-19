@@ -1,0 +1,6 @@
+{
+  "reporter_url": "https://raw.githubusercontent.com/benc-uk/k6-reporter/3.0.4/dist/bundle.js",
+  "sha256": "3d981a8f06dc558700e01e3fcbc3ab9214f4d45a4ff43c637c1ddf2e8d22c13c",
+  "k6": "k6 v2.1.0 (commit/devel, go1.26.4, darwin/arm64)",
+  "node": "v22.17.1"
+}
