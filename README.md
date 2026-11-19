@@ -49,9 +49,36 @@ Dự án tổ chức một hệ sinh thái gồm **5 Agent Skills chuyên biệt
 
 ---
 
-## 3. Tổng hợp kết quả thực thi các kịch bản kiểm thử
+## 3. Báo cáo Tóm tắt Kiểm thử (Test Summary Report — §14)
 
-Mọi kịch bản đều thực thi luồng E2E 5 bước độc nhất không trùng lặp: `Login (lấy JWT)` $\rightarrow$ `Search sản phẩm` $\rightarrow$ `Xem chi tiết sản phẩm` $\rightarrow$ `Thêm vào giỏ hàng` $\rightarrow$ `Checkout đơn hàng`.
+Để đáp ứng đầy đủ yêu cầu cấu trúc tại Mục §14 của đề bài, dưới đây là phần tóm lược các tiêu chí cốt lõi của đợt kiểm thử:
+
+- **1. Scenarios Run (Các kịch bản đã thực thi):**
+  - Đã thực thi trọn vẹn 4 kịch bản kiểm thử tải độc lập: **Load Testing** (10 VUs, 3 phút), **Stress Testing** (thang tải 6 giai đoạn, đỉnh 250 VUs, 4m30s), **Spike Testing** (dồn 0 lên 250 VUs trong 10s, duy trì 60s), và **Soak Testing** (duy trì 20 VUs trong 605s/10 phút).
+  - Trước mỗi kịch bản tải đều thực hiện chạy kiểm chứng **Smoke Test** (1 VU, 1 iteration) để xác thực tính toàn vẹn của token, product ID và orderId trước khi đo tải.
+- **2. Endpoint Groups Covered (Các nhóm endpoint nghiệp vụ bao phủ):**
+  - Bao phủ đầy đủ cả **3 nhóm endpoint trọng yếu** theo yêu cầu đề bài (§5):
+    + **Auth-heavy (Nhóm xác thực):** `POST /api/login` (Xác thực tài khoản, cập nhật login attempts, ký cấp JWT token).
+    + **Read-heavy (Nhóm đọc dữ liệu):** `GET /api/products?search={keyword}` và `GET /api/products/{id}` (Truy vấn danh mục sản phẩm và chi tiết sản phẩm).
+    + **Transactional (Nhóm giao dịch):** `POST /api/cart` (Ghi nhận giỏ hàng) và `POST /api/checkout` (Giao dịch tạo đơn hàng trong database).
+  - *Xác nhận tính độc nhất:* Toàn bộ các kịch bản đều dùng chung luồng E2E 5 bước tuần tự độc nhất của sinh viên (`Login` $\rightarrow$ `Search` $\rightarrow$ `Detail` $\rightarrow$ `Cart` $\rightarrow$ `Checkout`), cam kết không trùng lặp workflow với bất kỳ thành viên nào khác trong nhóm.
+- **3. Endurance Threshold with Numbers (Ngưỡng chịu tải bền vững kèm số liệu thực nghiệm):**
+  - **Mức tải ổn định:** **20 VUs** duy trì liên tục trong **605.30 giây** (10 phút 5 giây, đạt chuẩn 10–15 phút).
+  - **Thông lượng (Throughput):** Đạt **19.78 HTTP RPS** (tương đương **3.96 completed checkout/s**; tổng 11,975 HTTP requests và 2,395 đơn hàng hoàn tất).
+  - **Độ trễ phản hồi (Response Latency):** HTTP $avg = 4.04\text{ ms}$, **HTTP $p95 = 8.18\text{ ms}$**, $p99 = 10.40\text{ ms}$; Thời gian hoàn tất luồng E2E $p95 = 4.97\text{ s}$ (bao gồm think-time).
+  - **Tỷ lệ lỗi (Error Rate):** **$0.0\%$** (0 lỗi HTTP, 0 lượt checkout thất bại).
+  - **Hành vi tài nguyên & Giới hạn bền vững:** Tiến trình Node.js có mức chiếm dụng CPU trung bình ~12% (đỉnh 23.7%). Bộ nhớ RSS tăng tuyến tính từ $47.72\text{ MiB}$ lên $86.16\text{ MiB}$ (tăng ròng **$+38.44\text{ MiB}$**, đỉnh **$90.00\text{ MiB}$**). Cảnh báo: SUT có điểm nghẽn tích lũy RAM do biến mảng `userCarts` không được giải phóng sau checkout, do đó hệ thống không thể duy trì bền vững vượt quá vài giờ nếu không vá lỗi này.
+- **4. Number of Bugs / Performance Issues (Số lượng lỗi & vấn đề hiệu năng phát hiện):**
+  - Ghi nhận **02 lỗi kỹ thuật thực tế** và đã mở Issue công khai trên GitHub (xem chi tiết kèm ảnh tại [reports/bug-report.md](performance_250/reports/bug-report.md)):
+    + **BUG-01:** Kiểu dữ liệu `price` không nhất quán ở `GET /api/products/:id` (ID chẵn trả String — ghi nhận 5,361 lần qua metric `price_string_anomalies`).
+    + **BUG-02:** Rò rỉ bộ nhớ RAM (`userCarts`) do `POST /api/checkout` không giải phóng giỏ hàng (tăng ròng +38.44 MiB trong bài Soak).
+- **5. Demo Video Links (Liên kết Video minh họa):**
+  - **Video Demo kịch bản kiểm thử (>= 6 phút, giọng tiếng Việt của sinh viên):** [https://youtu.be/aYq1_LxL9zk](https://youtu.be/aYq1_LxL9zk) (Thời lượng: 380 giây, quay Terminal + Activity Monitor cùng khung hình, PID backend `node` thật).
+  - **Video Demo Agent Skills:** [https://youtu.be/s2V4jQMAYdg](https://youtu.be/s2V4jQMAYdg) (Trình diễn hệ sinh thái 5 skills và chi tiết quy trình k6 end-to-end).
+
+---
+
+## 4. Bảng tổng hợp số liệu đo đạc chi tiết 4 kịch bản
 
 | Kịch bản | Số VUs tối đa | Thời lượng đo | Tổng HTTP Requests | Completed Checkouts | HTTP RPS | Checkout RPS | HTTP `p95` | Error Rate | Peak RSS (MiB) | RSS Thay đổi | Max CPU | Định dạng Báo cáo HTML |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|---|
@@ -60,13 +87,9 @@ Mọi kịch bản đều thực thi luồng E2E 5 bước độc nhất không 
 | **Spike** | 250 | 135.78s | 9,185 | 1,837 | 67.65 | 13.53 | 7.90 ms | 0.0% | 102.69 | +13.81 MiB | 53.0% | [Custom Breakdown](performance_250/reports/spike/spike_breakdown.html) |
 | **Soak** | 20 | 605.30s | 11,975 | 2,395 | 19.78 | 3.96 | 8.18 ms | 0.0% | 90.00 | **+38.44 MiB** | 23.7% | [Built-in Dashboard](performance_250/reports/soak/soak_dashboard.html) |
 
-### Ngưỡng chịu tải bền vững đo được (Endurance Threshold):
-- Hệ thống duy trì ổn định ở mức **20 VUs** trong **605 giây (10 phút 5 giây)** với thông lượng **19.78 HTTP RPS** (tương đương **3.96 completed checkout/s**), độ trễ `p95` đạt **8.18 ms** và tỷ lệ lỗi giữ vững ở mức **0.0%**.
-- **Cảnh báo giới hạn bộ nhớ:** Bộ nhớ RSS tăng tuyến tính từ `47.72 MiB` lên `86.16 MiB` (tăng ròng `+38.44 MiB`, đỉnh `90.00 MiB`). Điều này chứng minh SUT có điểm nghẽn tích tụ RAM và không thể duy trì tải liên tục nhiều giờ nếu không khắc phục lỗi giải phóng biến `userCarts`.
-
 ---
 
-## 4. Các lỗi và bất thường phát hiện trên SUT (GitHub Issues)
+## 5. Các lỗi và bất thường phát hiện trên SUT (Chi tiết GitHub Issues)
 
 Trong quá trình kiểm thử tải và phân tích dữ liệu raw/tài nguyên, sinh viên đã phát hiện và ghi nhận 2 lỗi kỹ thuật thực tế trên repository GitHub (Xem tài liệu chi tiết có chèn ảnh minh chứng tại [reports/bug-report.md](performance_250/reports/bug-report.md)):
 

@@ -1,4 +1,5 @@
-* 0f1fb13 (HEAD -> main) docs: sync root README with performance_250 submission summary
+* 254a472 (HEAD -> main) docs: enrich README files with explicit Test Summary Report per §14
+* 5d2d4ea docs: sync root README with performance_250 submission summary
 * 15801ce docs(perf): add finalized PDF deliverables for main report, AI audit and critique
 * 9b7346e docs(perf): update main report and README with video links, skill roles and self-assessment
 * c621a44 docs(perf): add detailed bug report for BUG-01 and BUG-02 with issue screenshots
@@ -22,4 +23,3 @@
 * 106fe69 fix(perf): harden k6 workflow, spike phase tracking, checks and summary reports
 * e92be85 test(perf): scale independent test accounts to 120 for peak load
 * 69ff1c1 docs(perf): record initial AI interaction into audit log
-* 84e2a80 feat(perf): bootstrap isolated performance workspace and test plans
