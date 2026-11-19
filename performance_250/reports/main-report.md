@@ -1,4 +1,4 @@
-# HW05 — Kiểm thử hiệu năng EShop với k6 (Task 1)
+# HW05 — Kiểm thử hiệu năng EShop với k6
 
 - **MSSV:** 23120367
 - **Họ và tên**: Trần Ngọc Diễm Thúy
@@ -56,7 +56,7 @@ Tất cả các kịch bản (`Load`, `Stress`, `Spike`, `Soak`) dùng chung [wo
 - **Cơ chế cấp phát:** `SharedArray` parse CSV ở init context; mỗi VU dùng `rows[vuOffset + __VU - 1]` (mặc định `VU_OFFSET=0`), **không modulo**, dừng ngay trước khi chạy nếu số tài khoản < `max(40, peak VUs)`.
 - **Tồn kho:** N/A (schema `products` không có cột stock).
 
-### Ma trận cấu hình các kịch bản (đã hiệu chỉnh cho `performance_250/`)
+### Ma trận cấu hình các kịch bản
 
 *Lưu ý: Các ngưỡng `P95_MS`, `ERROR_RATE`, `PEAK_VUS` và `think-time` là giả định ban đầu dùng để kiểm chứng bằng thực nghiệm, không phải kết luận năng lực phần cứng trước khi đo.*
 
@@ -395,9 +395,3 @@ jobs:
 - **Video Demo Agent Skill:** [https://youtu.be/s2V4jQMAYdg](https://youtu.be/s2V4jQMAYdg) (Minh họa sử dụng bộ 5 skills và chi tiết skill `.agents/skills/eshop-k6-performance/` từ đầu đến cuối quy trình, ghi công thư viện `benc-uk/k6-reporter` 3.0.4).
 
 ---
-
-## 9. Phụ lục bắt buộc *(Chờ hoàn thiện & xuất PDF)*
-
-- **AI Audit Report:** `audit/ai-audit.md` + `audit/ai-audit.pdf` (ghi đầy đủ tool/model, thời gian có timezone, prompt, final response hiển thị cho người dùng, human review; không ghi suy nghĩ nội bộ hay tool trace).
-- **AI Critique:** `audit/ai-critique.md` + `audit/ai-critique.pdf` (một đoạn văn **200–300 từ** do chính sinh viên viết).
-- **Git Commit Log:** [git-log.txt](../evidence/git-log.txt) và kiểm tra trực quan các bản PDF (`main-report.pdf`, `ai-audit.pdf`, `ai-critique.pdf`).
