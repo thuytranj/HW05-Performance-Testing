@@ -1,4 +1,6 @@
-* 0f8df70 (HEAD -> main) docs(perf): update main report and README with video links, skill roles and self-assessment
+* 0f1fb13 (HEAD -> main) docs: sync root README with performance_250 submission summary
+* 15801ce docs(perf): add finalized PDF deliverables for main report, AI audit and critique
+* 9b7346e docs(perf): update main report and README with video links, skill roles and self-assessment
 * c621a44 docs(perf): add detailed bug report for BUG-01 and BUG-02 with issue screenshots
 * 1a49152 chore(perf): add evidence links metadata and github issue screenshots
 * 2b3603c docs(perf): add continuous performance testing proposal (Task 3 - G9.6)
@@ -21,5 +23,3 @@
 * e92be85 test(perf): scale independent test accounts to 120 for peak load
 * 69ff1c1 docs(perf): record initial AI interaction into audit log
 * 84e2a80 feat(perf): bootstrap isolated performance workspace and test plans
-* 8743c8f test(perf): add 40-account synthetic dataset and database reset script
-* 00ee08c docs(project): document architecture and agent guidelines

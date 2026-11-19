@@ -1,288 +1,140 @@
-# Đặc tả Yêu cầu Hệ thống (System Requirements Specification)
+# Báo cáo tổng kết bài nộp HW05 — Performance Testing với k6
 
-# EShop — Phiên bản dành cho Kiểm thử Phần mềm
-
-> **Phạm vi tài liệu**: Mô tả **yêu cầu nghiệp vụ đúng** của hệ thống EShop.
-> Sinh viên sử dụng tài liệu này làm cơ sở thiết kế test case, sau đó kiểm thử hệ thống thực để tìm ra các điểm triển khai không tuân thủ đặc tả.
-
----
-
-## 1. Tổng quan Hệ thống
-
-Hệ thống EShop là nền tảng thương mại điện tử bao gồm 4 thành phần:
-
-| Thành phần   | Công nghệ                   | URL mặc định            |
-| ------------ | --------------------------- | ----------------------- |
-| Backend API  | Node.js + Express + SQLite  | `http://localhost:3000` |
-| Frontend Web | React + Vite + Tailwind CSS | `http://localhost:5173` |
-| Web Admin    | React + Vite + Tailwind CSS | `http://localhost:5174` |
-| Mobile App   | React Native + Expo         | IP LAN của máy chủ      |
-
-**Tài khoản mặc định:**
-
-- Admin: `admin@eshop.com` / `Admin123!`
-- User test: `test@eshop.com` / `Test1234!`
+- **Họ và tên:** Trần Ngọc Diễm Thúy
+- **Mã số sinh viên:** `23120367`
+- **Lớp / Học phần:** Kiểm thử phần mềm
+- **Ngày thực thi:** `2026-11-19` (Múi giờ: `Asia/Ho_Chi_Minh`)
+- **Môi trường đo đạc:** macOS Sequoia 15.1 (Darwin 24.1.0), Apple M1, 8GB RAM. Hostname máy đo: `Thuys-MacBook-Air`.
+- **Public GitHub Repository:** [https://github.com/thuytranj/HW05-Performance-Testing](https://github.com/thuytranj/HW05-Performance-Testing)
 
 ---
 
-## 2. Quản lý Tài khoản (Authentication & Authorization)
+## 1. Bảng tự đánh giá kết quả (Self-Assessment Table)
 
-### FR-01: Đăng ký tài khoản
-
-- Người dùng phải cung cấp: **Họ Tên**, **Email**, **Mật khẩu**.
-- Email phải có định dạng hợp lệ (`user@domain.com`) và là duy nhất trong hệ thống.
-- **Yêu cầu mật khẩu mạnh**: Tối thiểu 8 ký tự, có ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số và 1 ký tự đặc biệt (`@`, `$`, `!`, `%`, `*`, `?`, `&`).
-- Phải có trường **Xác nhận mật khẩu** — hệ thống từ chối nếu hai trường không khớp.
-- Sau khi đăng ký thành công, người dùng được chuyển tới trang Đăng nhập.
-
-### FR-02: Đăng nhập & Khóa tài khoản
-
-- Người dùng nhập Email và Mật khẩu.
-- Sau mỗi lần đăng nhập sai, hệ thống tăng bộ đếm lên **đúng 1 đơn vị**.
-- Nếu đăng nhập sai từ **3 lần trở lên** liên tiếp, tài khoản bị tạm khóa **30 giây** (môi trường demo). Hệ thống trả về thông báo lỗi phù hợp; không để lộ chi tiết nguyên nhân.
-- Đăng nhập thành công trả về JWT Token. Token được lưu phía client và gửi kèm tất cả các yêu cầu có xác thực qua header `Authorization: Bearer <token>`.
-- Trường email phải dùng `type="email"` (có validate HTML5 format).
-
-### FR-03: Quên mật khẩu & Đặt lại mật khẩu (2 bước)
-
-**Bước 1 — Lấy mã OTP:**
-
-- Người dùng nhập địa chỉ Email đã đăng ký.
-- Hệ thống sinh mã OTP **6 chữ số ngẫu nhiên** và gửi qua Email (trong môi trường demo: hiển thị trực tiếp trên màn hình).
-- Giao diện phải hiển thị **chỉ báo bước (Step Indicator)** — ví dụ: "Bước 1 / 2".
-- Có nút **Quay lại đăng nhập**.
-
-**Bước 2 — Đặt lại mật khẩu:**
-
-- Người dùng nhập OTP, Mật khẩu mới, và **Xác nhận mật khẩu mới**.
-- Mật khẩu mới phải tuân thủ điều kiện như FR-01.
-- Hai trường mật khẩu phải khớp nhau.
-- OTP chỉ hợp lệ cho email đã yêu cầu, không thể dùng cho email khác.
-
-### FR-04: Quản lý hồ sơ cá nhân
-
-- Người dùng đã đăng nhập có thể cập nhật: **Họ Tên**, **Số điện thoại**, **Địa chỉ giao hàng mặc định**.
-- **Số điện thoại hợp lệ**: bắt đầu bằng số `0`, từ 10–11 chữ số.
-- Email không được phép thay đổi qua giao diện.
-- Người dùng chỉ có thể cập nhật hồ sơ của chính mình; không thể tự thay đổi thuộc tính `role`.
+| Tiêu chí đánh giá | Điểm tối đa | Điểm tự chấm | Minh chứng & Artifacts tương ứng |
+|---|:---:|:---:|---|
+| **1. Kịch bản Load Testing** | 30 | **30** | Đầy đủ 5 bước E2E; 10 VUs, 3 phút; built-in HTML dashboard tại [load_dashboard.html](performance_250/reports/load/load_dashboard.html); raw CSV [23120367_Load_raw.csv](performance_250/raw_logs/23120367_Load_raw.csv); phân tích [Load.analysis.md](performance_250/analysis/Load.analysis.md); screenshot [Load_screen.png](performance_250/evidence/Load_screen.png). |
+| **2. Kịch bản Stress Testing** | 20 | **20** | Thang tải 6 giai đoạn, đỉnh 250 VUs (4m30s); k6-reporter tabbed HTML tại [stress_summary.html](performance_250/reports/stress/stress_summary.html); raw CSV [23120367_Stress_raw.csv](performance_250/raw_logs/23120367_Stress_raw.csv); phân tích [Stress.analysis.md](performance_250/analysis/Stress.analysis.md); screenshot [Stress_screen.png](performance_250/evidence/Stress_screen.png). |
+| **3. Kịch bản Spike Testing** | 20 | **20** | Tải dồn 0 lên 250 VUs trong 10s, duy trì 60s và hạ tải; custom breakdown HTML tại [spike_breakdown.html](performance_250/reports/spike/spike_breakdown.html); raw CSV [23120367_Spike_raw.csv](performance_250/raw_logs/23120367_Spike_raw.csv); phân tích [Spike.analysis.md](performance_250/analysis/Spike.analysis.md); screenshot [Spike_screen.png](performance_250/evidence/Spike_screen.png). |
+| **4. AI Analysis & Critique** | 10 | **10** | Lịch sử tương tác đầy đủ tại [ai-audit.md](performance_250/audit/ai-audit.md); bảng kiểm chứng 4 cột đối chiếu raw samples tại [ai-verification.md](performance_250/analysis/ai-verification.md); bài phản biện AI Critique chuẩn 285 từ tại [ai-critique.md](performance_250/audit/ai-critique.md); 2 GitHub Issues thực tế. |
+| **5. Continuous Performance (Task 3)** | 10 | **10** | Đề xuất mô hình tích hợp CI/CD hoàn chỉnh (G9.6) tại [continuous-performance.md](performance_250/reports/continuous-performance.md); sơ đồ Mermaid, chiến lược lọc commit, ngân sách hồi quy `p95`, xử lý nhiễu false alarms và phân tích chi phí. |
+| **6. Reusable Agent Skills** | 10 | **10** | Bộ 5 Agent Skills chuyên biệt đóng gói tại [skills/](performance_250/skills/); demo trực tiếp quy trình kiểm thử tự động end-to-end trên video. |
+| **TỔNG CỘNG** | **100** | **100/100** | Bài làm đầy đủ, trung thực, số liệu tính từ raw CSV Type-7, không giả mạo số liệu hay kết quả. |
 
 ---
 
-## 3. Danh mục & Sản phẩm
+## 2. Giới thiệu vai trò của từng Agent Skill trong dự án
 
-### FR-05: Xem danh sách & Tìm kiếm sản phẩm
+Dự án tổ chức một hệ sinh thái gồm **5 Agent Skills chuyên biệt** đặt trong thư mục [skills/](performance_250/skills/), hỗ trợ toàn diện từ khâu dữ liệu, công cụ k6, phương pháp luận cho đến CI/CD và thực thi bài toán EShop:
 
-- Trang chủ hiển thị danh sách tất cả sản phẩm dạng lưới (grid).
-- Mỗi sản phẩm hiển thị: **Ảnh** (tỷ lệ chuẩn, có alt text mô tả), **Tên sản phẩm**, **Giá** (đơn vị: ₫, định dạng phân cách hàng nghìn).
-- Thanh tìm kiếm tìm theo tên sản phẩm. Từ khóa tìm kiếm phải được **hiển thị an toàn** (không render HTML).
-- Khi đang tải dữ liệu phải hiển thị trạng thái **loading**.
-- Khi không có kết quả tìm kiếm phải hiển thị thông báo **empty state** phù hợp.
-- Trang chủ chỉ có **đúng một thẻ `<h1>`**.
-- Mỗi trang chỉ có 1 `<h1>` duy nhất.
+1. **`test-data-management`** ([SKILL.md](performance_250/skills/test-data-management/SKILL.md)):
+   - **Vai trò:** Quản lý và sinh dữ liệu kiểm thử chất lượng cao. Thiết kế tệp [e2e_test_data.csv](performance_250/data/e2e_test_data.csv) chứa **250 tài khoản độc lập** (vượt xa yêu cầu tối thiểu 40 dòng của đề bài). Đảm bảo mỗi Virtual User (VU) có một tài khoản duy nhất, triệt tiêu hoàn toàn rủi ro khóa tài khoản do login đồng thời hoặc đụng độ dữ liệu giỏ hàng.
 
-### FR-06: Xem chi tiết sản phẩm
+2. **`k6`** ([SKILL.md](performance_250/skills/k6/SKILL.md)):
+   - **Vai trò:** Cung cấp tri thức chuyên sâu về công cụ kiểm thử tải Grafana k6. Định nghĩa cấu hình các loại executor (`ramping-vus`, `constant-vus`), quản lý nhóm `group()`, các phép kiểm tra `check()`, custom metrics, và điều khiển cơ chế xuất dữ liệu raw CSV cũng như xuất báo cáo đa dạng.
 
-- Hiển thị đầy đủ: Ảnh lớn, Tên, Giá, Mô tả, Danh mục.
-- Có ô nhập **Số lượng** (chỉ nhận số nguyên dương, tối thiểu là 1).
-- Nút **Thêm vào giỏ hàng** — sau khi bấm hiển thị phản hồi trực quan (toast notification hoặc badge cập nhật).
+3. **`performance-testing`** ([SKILL.md](performance_250/skills/performance-testing/SKILL.md)):
+   - **Vai trò:** Hướng dẫn phương pháp luận và chuẩn mực kiểm thử hiệu năng. Xác định rõ mục tiêu của từng kịch bản (Load đo năng lực cơ sở, Stress tìm điểm gãy, Spike kiểm tra khả năng co giãn và phục hồi, Soak kiểm tra độ bền tài nguyên), đồng thời định nghĩa các tiêu chuẩn SLA/SLO về độ trễ và tỷ lệ lỗi cho môi trường sản xuất.
 
----
+4. **`ci-cd-integration`** ([SKILL.md](performance_250/skills/ci-cd-integration/SKILL.md)):
+   - **Vai trò:** Thiết kế giải pháp tích hợp kiểm thử hiệu năng vào quy trình CI/CD (Task 3). Cung cấp các pipeline template cho GitHub Actions và GitLab CI, thiết lập cơ chế lọc commit thông minh (chỉ chạy kiểm thử tải khi có thay đổi ở backend/database), và đặt ngưỡng chặn hồi quy hiệu năng (quality gates) dựa trên `p95`.
 
-## 4. Giỏ hàng & Thanh toán
-
-### FR-07: Giỏ hàng (Shopping Cart)
-
-- Hiển thị danh sách sản phẩm với các cột: **Sản phẩm**, **Đơn giá**, **Số lượng** (có nút +/- để chỉnh), **Thành tiền**, **Thao tác**.
-- Thêm cùng một sản phẩm vào giỏ sẽ tăng số lượng, không tạo dòng mới.
-- Nút **Xóa sản phẩm** phải có dialog xác nhận trước khi thực hiện.
-- Có nút **Tiếp tục mua sắm** để quay về trang chủ.
-- Tổng tiền hiển thị nhãn chính xác: **"Tổng cộng"** (không phải "Tổng tạm tính").
-- Giỏ hàng trống phải có hình minh họa và thông báo rõ ràng.
-
-### FR-08: Thanh toán (Checkout)
-
-- Chỉ người dùng **đã đăng nhập** mới tiến hành thanh toán được.
-- **Tổng tiền thanh toán** được tính tự động từ giỏ hàng và không cho phép người dùng chỉnh sửa trực tiếp.
-- Giao diện hiển thị đầy đủ danh sách sản phẩm đặt mua.
-- Backend phải tự tính lại tổng tiền; không chấp nhận giá trị `total_amount` do client gửi lên.
-- Sau thanh toán thành công, giỏ hàng được xóa.
-
-### FR-09: Mã Giảm Giá (Coupon)
-
-Tại bước Checkout, người dùng có thể nhập mã giảm giá. Hệ thống áp dụng giảm giá dựa trên **5 điều kiện** sau, tất cả phải thỏa mãn:
-
-| #   | Điều kiện              | Mô tả                                                       |
-| --- | ---------------------- | ----------------------------------------------------------- |
-| C1  | **Mã tồn tại**         | Mã phải có trong CSDL và đang hoạt động (`is_active = 1`)   |
-| C2  | **Còn hạn sử dụng**    | Ngày hiện tại phải trước `expired_at`                       |
-| C3  | **Đủ ngưỡng đơn hàng** | Tổng đơn hàng **>= (lớn hơn hoặc bằng)** `min_order_amount` |
-| C4  | **Đã đăng nhập**       | Người dùng phải có JWT Token hợp lệ                         |
-| C5  | **Chưa dùng hết lượt** | Số lần đã dùng mã này của user < `max_uses_per_user`        |
-
-**Công thức tính giảm giá:**
-
-- Loại `percent`: `discount_amount = total × discount_value / 100`
-- Loại `fixed`: `discount_amount = discount_value`
-- `final_amount = total - discount_amount`
-
-**Mã giảm giá mẫu trong hệ thống:**
-
-| Mã        | Loại    | Giá trị   | Ngưỡng tối thiểu | Hạn dùng   | Số lần/người |
-| --------- | ------- | --------- | ---------------- | ---------- | ------------ |
-| `SAVE10`  | percent | 10%       | 300,000 ₫        | 2099-12-31 | 1            |
-| `BIGBUY`  | fixed   | 50,000 ₫  | 500,000 ₫        | 2099-12-31 | 1            |
-| `VIP100`  | fixed   | 100,000 ₫ | 300,000 ₫        | 2099-12-31 | 2            |
-| `EXPIRED` | percent | 20%       | 100,000 ₫        | 2020-01-01 | 1            |
+5. **`eshop-k6-performance`** ([SKILL.md](performance_250/skills/eshop-k6-performance/SKILL.md)):
+   - **Vai trò:** **Skill nòng cốt của bài tập HW05**. Đóng gói trọn vẹn quy trình 7 giai đoạn kiểm thử cho ứng dụng EShop:
+     - Cô lập runtime backend Node.js và database SQLite (tránh xung đột PID và lỗi destructive seed của source gốc).
+     - Quản lý runner tự động với tính năng chạy Smoke test xác minh tính toàn vẹn của token, product ID và orderId trước khi chạy tải.
+     - Tự động hóa phân tích dữ liệu raw CSV bằng [analyze_raw.py](performance_250/scripts/analyze_raw.py) (tính phân vị chuẩn Type-7, không tính trung bình p95 endpoint).
+     - Phân tích mẫu tài nguyên hệ thống (CPU, RSS RAM) bằng [analyze_resources.py](performance_250/scripts/analyze_resources.py).
+     - Tự động kiểm tra tính toàn vẹn của hồ sơ nộp bài qua [check_submission.py](performance_250/scripts/check_submission.py).
 
 ---
 
-## 5. Quản lý Đơn hàng
+## 3. Tổng hợp kết quả thực thi các kịch bản kiểm thử
 
-### FR-10: Trạng thái Đơn hàng (Order State Machine)
+Mọi kịch bản đều thực thi luồng E2E 5 bước độc nhất không trùng lặp: `Login (lấy JWT)` $\rightarrow$ `Search sản phẩm` $\rightarrow$ `Xem chi tiết sản phẩm` $\rightarrow$ `Thêm vào giỏ hàng` $\rightarrow$ `Checkout đơn hàng`.
 
-Đơn hàng có **5 trạng thái** và phải tuân theo sơ đồ chuyển đổi sau:
+| Kịch bản | Số VUs tối đa | Thời lượng đo | Tổng HTTP Requests | Completed Checkouts | HTTP RPS | Checkout RPS | HTTP `p95` | Error Rate | Peak RSS (MiB) | RSS Thay đổi | Max CPU | Định dạng Báo cáo HTML |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|---|
+| **Load** | 10 | 182.86s | 1,520 | 304 | 8.31 | 1.66 | 7.24 ms | 0.0% | 68.88 | +13.05 MiB | 10.0% | [Built-in Dashboard](performance_250/reports/load/load_dashboard.html) |
+| **Stress** | 250 | 272.90s | 44,360 | 8,872 | 162.55 | 32.51 | 8.56 ms | 0.0% | 105.02 | +23.00 MiB | 54.6% | [k6-reporter HTML](performance_250/reports/stress/stress_summary.html) |
+| **Spike** | 250 | 135.78s | 9,185 | 1,837 | 67.65 | 13.53 | 7.90 ms | 0.0% | 102.69 | +13.81 MiB | 53.0% | [Custom Breakdown](performance_250/reports/spike/spike_breakdown.html) |
+| **Soak** | 20 | 605.30s | 11,975 | 2,395 | 19.78 | 3.96 | 8.18 ms | 0.0% | 90.00 | **+38.44 MiB** | 23.7% | [Built-in Dashboard](performance_250/reports/soak/soak_dashboard.html) |
 
-```
-                 [Admin xác nhận]          [Admin giao hàng]      [Admin hoàn tất]
-  ┌──────────┐ ─────────────────► ┌───────────┐ ──────────────► ┌──────────┐ ──────────► ┌───────────┐
-  │ pending  │                    │ confirmed │                  │ shipping │             │ delivered │
-  └──────────┘                    └───────────┘                  └──────────┘             └───────────┘
-       │                               │
-       │ [User/Admin hủy]              │ [User/Admin hủy]
-       ▼                               ▼
-  ┌──────────┐                    ┌──────────┐
-  │ canceled │                    │ canceled │
-  └──────────┘                    └──────────┘
+### Ngưỡng chịu tải bền vững đo được (Endurance Threshold):
+- Hệ thống duy trì ổn định ở mức **20 VUs** trong **605 giây (10 phút 5 giây)** với thông lượng **19.78 HTTP RPS** (tương đương **3.96 completed checkout/s**), độ trễ `p95` đạt **8.18 ms** và tỷ lệ lỗi giữ vững ở mức **0.0%**.
+- **Cảnh báo giới hạn bộ nhớ:** Bộ nhớ RSS tăng tuyến tính từ `47.72 MiB` lên `86.16 MiB` (tăng ròng `+38.44 MiB`, đỉnh `90.00 MiB`). Điều này chứng minh SUT có điểm nghẽn tích tụ RAM và không thể duy trì tải liên tục nhiều giờ nếu không khắc phục lỗi giải phóng biến `userCarts`.
+
+---
+
+## 4. Các lỗi và bất thường phát hiện trên SUT (GitHub Issues)
+
+Trong quá trình kiểm thử tải và phân tích dữ liệu raw/tài nguyên, sinh viên đã phát hiện và ghi nhận 2 lỗi kỹ thuật thực tế trên repository GitHub (Xem tài liệu chi tiết có chèn ảnh minh chứng tại [reports/bug-report.md](performance_250/reports/bug-report.md)):
+
+1. **GitHub Issue #1:** [Kiểu dữ liệu `price` không nhất quán ở `GET /api/products/:id`](https://github.com/thuytranj/HW05-Performance-Testing/issues/1)
+   - *Mô tả:* Endpoint trả về giá tiền dưới dạng chuỗi (String) đối với các sản phẩm có ID chẵn (`server.js:162`), trái với schema `INTEGER` trong database và endpoint danh sách. Metric đo được ghi nhận **5,361 lần** xảy ra bất thường này qua 4 kịch bản.
+2. **GitHub Issue #2:** [Tích lũy bộ nhớ RAM (`userCarts`) do `POST /api/checkout` không xóa giỏ hàng](https://github.com/thuytranj/HW05-Performance-Testing/issues/2)
+   - *Mô tả:* Giỏ hàng lưu trữ vô hạn trong biến đối tượng RAM tiến trình Node.js (`server.js:14, 290–309`) và không được xóa sau khi checkout thành công, dẫn đến hiện tượng phình bộ nhớ đo được rõ ràng trong bài Soak test (+38.44 MiB).
+
+---
+
+## 5. Danh mục liên kết & Minh chứng thực tế (Links & Evidence)
+
+- **Public GitHub Repository:** [https://github.com/thuytranj/HW05-Performance-Testing](https://github.com/thuytranj/HW05-Performance-Testing)
+- **Video Demo kịch bản kiểm thử (>= 6 phút, giọng tiếng Việt của sinh viên):**
+  - URL: [https://youtu.be/aYq1_LxL9zk](https://youtu.be/aYq1_LxL9zk)
+  - Thời lượng: 380 giây (>= 6 phút).
+  - Nội dung: Quay Terminal và Activity Monitor trong cùng một khung hình, thuyết minh bằng giọng thật của sinh viên, thể hiện rõ hostname `Thuys-MacBook-Air` và PID backend `node`.
+- **Video Demo Agent Skill:**
+  - URL: [https://youtu.be/s2V4jQMAYdg](https://youtu.be/s2V4jQMAYdg)
+  - Nội dung: Trình diễn sử dụng hệ sinh thái 5 skills và demo chi tiết skill `eshop-k6-performance` từ khâu bootstrap, chạy smoke, chạy kịch bản tải, phân tích raw CSV và kiểm tra cấu trúc bài nộp bằng [check_submission.py](performance_250/scripts/check_submission.py).
+- **Xác nhận định dạng k6 raw CSV thay cho .jtl:**
+  - Đã làm rõ sự không nhất quán giữa đề bài (cho phép dùng k6 nhưng văn bản đề cũ ghi `.jtl` của JMeter). Dự án bảo toàn toàn vẹn dữ liệu gốc bằng native k6 CSV với đầy đủ raw samples theo phân vị Type-7.
+- **Danh sách báo cáo và minh chứng kỹ thuật:**
+  - Báo cáo chính: [reports/main-report.md](performance_250/reports/main-report.md) | [reports/main-report.pdf](performance_250/reports/main-report.pdf)
+  - Nhật ký tương tác AI: [audit/ai-audit.md](performance_250/audit/ai-audit.md) | [audit/ai-audit.pdf](performance_250/audit/ai-audit.pdf)
+  - Đánh giá phản biện AI: [audit/ai-critique.md](performance_250/audit/ai-critique.md) | [audit/ai-critique.pdf](performance_250/audit/ai-critique.pdf)
+  - Đề xuất Continuous Performance: [reports/continuous-performance.md](performance_250/reports/continuous-performance.md)
+  - Bảng kiểm chứng số liệu: [analysis/ai-verification.md](performance_250/analysis/ai-verification.md)
+  - Lịch sử Git commit chi tiết: [evidence/git-log.txt](performance_250/evidence/git-log.txt)
+  - Thông số phần cứng: [evidence/hardware.txt](performance_250/evidence/hardware.txt) | Ảnh cấu hình [evidence/hardware.png](performance_250/evidence/hardware.png)
+
+---
+
+## 6. Hướng dẫn tái lập môi trường (Reproduction Steps)
+
+Để tái lập toàn bộ môi trường và kiểm chứng kết quả từ đầu:
+
+```bash
+# 1. Di chuyển vào thư mục bài tập
+cd performance_250
+
+# 2. Khởi tạo môi trường và kiểm tra trạng thái
+python3 scripts/perf.py install
+
+# 3. Khởi động backend độc lập và nạp dữ liệu kiểm thử cô lập
+./scripts/reset_db.sh
+
+# 4. Thực thi Smoke test kiểm tra 5 endpoints
+./scripts/run.sh Load --smoke
+
+# 5. Thực thi các kịch bản kiểm thử tải
+./scripts/run.sh Load
+./scripts/run.sh Stress
+./scripts/run.sh Spike
+SOAK_VUS=20 SOAK_SECONDS=600 ./scripts/run.sh Soak
+
+# 6. Tự động phân tích raw logs và tài nguyên
+python3 scripts/analyze_raw.py raw_logs/23120367_Stress_raw.csv
+python3 scripts/analyze_resources.py evidence/Soak_resources.csv
+
+# 7. Kiểm tra tính toàn vẹn của hồ sơ bài nộp
+python3 scripts/check_submission.py
 ```
 
-**Ràng buộc trạng thái kết thúc (Final States):**
-
-- Trạng thái `delivered` và `canceled` là **trạng thái kết thúc** — không được phép chuyển sang bất kỳ trạng thái nào khác.
-- Khi đơn hàng đã ở trạng thái `shipping`, **User không được phép tự hủy** — chỉ Admin mới có thể thao tác.
-- Mọi chuyển đổi không hợp lệ phải trả về lỗi với thông báo phù hợp.
-
-### FR-11: Xem lịch sử đơn hàng (User)
-
-- Người dùng chỉ xem được đơn hàng của chính mình.
-- Hiển thị: Mã đơn, Ngày đặt, Tổng tiền, Trạng thái hiện tại.
-- Trạng thái phải được dịch sang tiếng Việt rõ ràng và phân biệt màu sắc.
-
 ---
 
-## 6. Phân hệ Web Admin
+## 7. Quy cách đóng gói nộp bài
 
-### FR-12: Kiểm soát truy cập (Access Control)
-
-- Phân hệ Admin chỉ dành cho tài khoản có `role = 'admin'`.
-- **Tất cả** các API Admin (`/api/admin/*`) và các API có tính ảnh hưởng dữ liệu (`POST/PUT/DELETE /api/products`, `/api/categories`, `/api/coupons`) đều phải yêu cầu:
-  1. Token JWT hợp lệ.
-  2. `role = 'admin'` trong Token.
-
-### FR-13: Dashboard
-
-- Hiển thị tổng doanh thu: Chỉ tính tổng `total_amount` của các đơn có `status = 'delivered'`.
-- Hiển thị tổng số đơn hàng.
-
-### FR-14: Quản lý Danh mục (Category CRUD)
-
-- Admin có thể Thêm / Xem / Xóa danh mục.
-- Tên danh mục là bắt buộc, không được để trống.
-
-### FR-15: Quản lý Sản phẩm (Product CRUD)
-
-- Admin có thể Thêm / Xem / Sửa / Xóa sản phẩm.
-- **Ràng buộc đầu vào:**
-  - Tên sản phẩm: bắt buộc, tối đa 255 ký tự.
-  - Giá: bắt buộc, phải là số **dương** (> 0).
-  - Danh mục: bắt buộc, phải chọn từ danh sách có sẵn.
-- Khi Sửa một sản phẩm, chỉ sản phẩm đó bị thay đổi — các sản phẩm khác giữ nguyên.
-
-### FR-16: Import Sản phẩm từ CSV
-
-- Admin có thể tải lên file CSV để import nhiều sản phẩm cùng lúc.
-- **Yêu cầu file CSV:**
-  - Đuôi file phải là `.csv`.
-  - Dòng đầu tiên là header: `name,price,description,imageUrl,category_id`.
-  - Hỗ trợ các trường có chứa dấu phẩy nếu được bọc trong dấu nháy kép (RFC 4180).
-- **Validation trước khi import:**
-  - `name` không được rỗng.
-  - `price` phải là số dương.
-- Nếu có lỗi ở bất kỳ dòng nào, toàn bộ import phải được **rollback** (giao dịch nguyên tử — all-or-nothing).
-- Hệ thống hiển thị báo cáo rõ ràng: bao nhiêu dòng thành công, bao nhiêu dòng lỗi và lý do.
-
-### FR-17: Quản lý Mã Giảm Giá (Coupon CRUD)
-
-- Admin có thể Thêm / Xem / Xóa mã giảm giá.
-- Các trường bắt buộc: `code` (duy nhất), `type` (percent/fixed), `discount_value` (dương), `expired_at`, `min_order_amount` (>= 0), `max_uses_per_user` (>= 1).
-
-### FR-18: Quản lý Đơn hàng (Admin)
-
-- Admin xem toàn bộ đơn hàng của tất cả người dùng.
-- Admin có thể chuyển đổi trạng thái đơn hàng theo đúng State Machine đã định nghĩa ở FR-10.
-- Địa chỉ giao hàng phải được hiển thị **an toàn** (không render HTML).
-
-### FR-19: Quản lý Người dùng (Admin)
-
-- Admin xem danh sách tất cả người dùng (không lộ mật khẩu).
-- Admin có thể xóa người dùng, **ngoại trừ không được xóa chính tài khoản đang đăng nhập**.
-
----
-
-## 7. Phân hệ Mobile (React Native)
-
-### FR-20: Tính năng Mobile
-
-- Đầy đủ các chức năng: Xem sản phẩm, Đăng nhập, Đăng xuất, Đăng ký, Giỏ hàng, Thanh toán, Hồ sơ, Lịch sử đơn hàng.
-- Chức năng Hủy đơn hàng tuân theo đúng State Machine ở FR-10 (chỉ được hủy khi `pending` hoặc `confirmed`).
-
----
-
-## 8. Yêu cầu Giao diện (GUI Requirements)
-
-### FR-21: Tiêu chuẩn Giao diện Chung
-
-- **Nhất quán ngôn ngữ**: Toàn bộ giao diện dùng tiếng Việt (trừ thuật ngữ kỹ thuật chuẩn).
-- **Nhất quán màu sắc**: Các nút hành động tích cực (Submit, Mua hàng) dùng màu xanh dương. Các nút nguy hiểm/hủy bỏ dùng màu đỏ.
-- **Nhất quán đơn vị tiền**: Luôn dùng ký hiệu `₫` với định dạng phân cách hàng nghìn.
-- **Tiêu đề trang**: Mỗi trang có đúng 1 thẻ `<h1>` mô tả nội dung trang.
-- **Tab Order**: Thứ tự focus theo Tab phải đi từ trên xuống dưới, trái sang phải.
-
-### FR-22: Form Requirements
-
-- Tất cả trường bắt buộc phải có ký hiệu `*` bên cạnh nhãn.
-- Trường Email phải dùng `type="email"`.
-- Trường Mật khẩu phải dùng `type="password"` (không hiển thị rõ).
-- Thông báo lỗi phải xuất hiện **trên** nút submit, không phải bên dưới.
-- Các form có từ 2 bước trở lên phải có **Step Indicator** rõ ràng.
-
-### FR-23: Navigation Requirements
-
-- Thanh điều hướng (Navbar) phải **highlight** trang đang được chọn.
-- Link "Giỏ hàng" phải hiển thị **badge số lượng** sản phẩm trong giỏ.
-- Nút Đăng xuất phải nhãn là "Đăng xuất" (không phải "Thoát").
-- Breadcrumb bắt buộc có ở các trang con (Giỏ hàng, Thanh toán, Chi tiết sản phẩm).
-
-### FR-24: Feedback & State Requirements
-
-- Sau khi bấm "Thêm vào giỏ", phải có phản hồi trực quan (toast/badge).
-- Khi xóa item khỏi giỏ phải có dialog xác nhận.
-- Trang trống (Empty State) phải có icon/hình minh họa và message thân thiện.
-- Tất cả ảnh sản phẩm phải có thuộc tính `alt` mô tả nội dung ảnh (không để rỗng).
-
----
-
-## 9. Yêu cầu Bảo mật (Security Requirements — Tham khảo)
-
-| ID     | Yêu cầu                                                                                                         |
-| ------ | --------------------------------------------------------------------------------------------------------------- |
-| SEC-01 | Mật khẩu **không** được lưu dưới dạng plaintext.                                                                |
-| SEC-02 | Các API có tính bảo mật phải yêu cầu JWT Token hợp lệ.                                                          |
-| SEC-03 | API Admin phải kiểm tra `role = 'admin'` trong Token, không chỉ kiểm tra sự tồn tại của Token.                  |
-| SEC-04 | Mọi dữ liệu từ user nhập vào khi hiển thị trên UI phải được escape đúng cách, không dùng `innerHTML` trực tiếp. |
-| SEC-05 | Truy vấn CSDL phải dùng Parameterized Query, không nối chuỗi trực tiếp.                                         |
-| SEC-06 | API cập nhật hồ sơ không được cho phép thay đổi trường `role` từ client.                                        |
-| SEC-07 | OTP đặt lại mật khẩu phải đủ entropy (tối thiểu 6 chữ số), có thời hạn và vô hiệu hóa sau khi dùng.             |
-
----
-
-_Tài liệu này phục vụ cho mục đích học tập và thực hành Kiểm thử Phần mềm. Phiên bản: 2.0 — Cập nhật: 2026-05-14._
+- **Tên file nén:** `23120367_HW05_AI_Performance_100.zip` (trong đó `100` là điểm tự chấm ba chữ số theo quy định).
+- **Hạn nộp:** Nộp trực tiếp trên hệ thống Moodle môn học trước thời hạn quy định.
+- **Yêu cầu bảo vệ:** Sẵn sàng cho buổi phỏng vấn vấn đáp ngẫu nhiên (Oral Defense 5–7 phút) để giải thích chi tiết về workflow, bằng chứng raw logs, nhận diện sai lệch AI và cấu trúc Agent Skills.
