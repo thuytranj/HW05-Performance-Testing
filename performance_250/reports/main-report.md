@@ -389,10 +389,10 @@ jobs:
 
 ---
 
-## 8. Video minh họa và Agent Skill *(Chờ điền link YouTube)*
+## 8. Video minh họa và Agent Skill
 
-- Link YouTube Unlisted tổng thời lượng `>= 6 phút`, thuyết minh giọng tiếng Việt của sinh viên, quay `Terminal + Activity Monitor` trong cùng khung hình.
-- Minh họa sử dụng skill `.agents/skills/eshop-k6-performance/` từ đầu đến cuối quy trình và ghi công thư viện (`benc-uk/k6-reporter` 3.0.4).
+- **Video Demo kịch bản kiểm thử (Load, Stress, Spike, Soak):** [https://youtu.be/aYq1_LxL9zk](https://youtu.be/aYq1_LxL9zk) (YouTube Unlisted, thời lượng `>= 6 phút`, thuyết minh bằng giọng tiếng Việt của sinh viên, quay `Terminal + Activity Monitor` trong cùng một khung hình).
+- **Video Demo Agent Skill:** [https://youtu.be/s2V4jQMAYdg](https://youtu.be/s2V4jQMAYdg) (Minh họa sử dụng bộ 5 skills và chi tiết skill `.agents/skills/eshop-k6-performance/` từ đầu đến cuối quy trình, ghi công thư viện `benc-uk/k6-reporter` 3.0.4).
 
 ---
 

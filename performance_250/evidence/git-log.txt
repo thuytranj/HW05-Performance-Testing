@@ -1,0 +1,25 @@
+* 0f8df70 (HEAD -> main) docs(perf): update main report and README with video links, skill roles and self-assessment
+* c621a44 docs(perf): add detailed bug report for BUG-01 and BUG-02 with issue screenshots
+* 1a49152 chore(perf): add evidence links metadata and github issue screenshots
+* 2b3603c docs(perf): add continuous performance testing proposal (Task 3 - G9.6)
+* 5efdf64 feat(perf): bundle agent skills in performance_250 workspace
+* 6fd1e2b docs(perf): add AI critique document highlighting technical biases and oversight
+* 7c75e98 docs(perf): update AI audit log with latest entries
+* a59f7c2 docs(perf): update main-report.md with user edits
+* a2551fc docs(perf): record AI audit interactions for 250-VU workspace
+* 6e60f9e docs(perf): update Vietnamese main report with Task 1 results, Task 2 verification, and issue links
+* 5a12006 docs(perf): add Task 2 AI verification and optimization feasibility analysis
+* 3ef69f4 test(perf): add hardware specification screenshot evidence
+* 78a4875 (origin/main, origin/HEAD) test(perf): add 250-VU Load/Stress/Spike and 20-VU Soak results, analysis, and evidence
+* ba126e4 feat(perf): bootstrap 250-account workspace and test plans for 20261119
+* 169188c chore(perf): retire prior 20261116 workspace superseded by 250-VU run
+* bfc5a4e fix(skills): scale default VUs (250 peak / 20 soak) and harden PID/port cleanup
+* ac474c7 fix(skills): sync hardened k6 workflow, csv guard, and summary reports
+* aaf4a94 docs(perf): add Vietnamese main report with AI review findings and fixes
+* e0bad82 test(perf): add isolated smoke verification logs for Load and Spike
+* 106fe69 fix(perf): harden k6 workflow, spike phase tracking, checks and summary reports
+* e92be85 test(perf): scale independent test accounts to 120 for peak load
+* 69ff1c1 docs(perf): record initial AI interaction into audit log
+* 84e2a80 feat(perf): bootstrap isolated performance workspace and test plans
+* 8743c8f test(perf): add 40-account synthetic dataset and database reset script
+* 00ee08c docs(project): document architecture and agent guidelines
